@@ -36,7 +36,9 @@ export default function SubHeader() {
             />
           </g>
         </svg>
-        <p className={poppins.className}>100% Quality Products</p>
+        <p className={`${poppins.className} font-semibold`}>
+          100% Quality Products
+        </p>
       </div>
     </div>
   );
