@@ -1,10 +1,12 @@
+import SectionOne from '@/components/shared/homeScreens/SectionOne';
+import SubHeader from '@/components/shared/SubHeader';
 import React from 'react';
-import Header from '../components/shared/Header';
 
 export default function Home() {
   return (
     <div>
-      <Header />
+      <SubHeader />
+      <SectionOne />
     </div>
   );
 }
