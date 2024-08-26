@@ -13,35 +13,46 @@ import img9 from "../../assets/products/img9.png";
 import img10 from "../../assets/products/img10.png";
 import img11 from "../../assets/products/img11.png";
 
+const MAX_COLUMNS = 4;
+
 export default function ProductGrid() {
   const productsData = [
-    { id: 1, img: img1 },
-    { id: 2, img: img2 },
-    { id: 3, img: img3 },
-    { id: 4, img: img4 },
-    { id: 5, img: img5 },
-    { id: 6, img: img6 },
-    { id: 7, img: img7 },
-    { id: 8, img: img8 },
-    { id: 9, img: img9 },
-    { id: 10, img: img10 },
-    { id: 11, img: img11 }
+    { id: 1, Image: img1 },
+    { id: 2, Image: img2 },
+    { id: 3, Image: img3 },
+    { id: 4, Image: img4 },
+    { id: 5, Image: img5 },
+    { id: 6, Image: img6 },
+    { id: 7, Image: img7 },
+    { id: 8, Image: img8 },
+    { id: 9, Image: img9 },
+    { id: 10, Image: img10 },
+    { id: 11, Image: img11 },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-4">
-      {productsData.map((product) => (
-        <div key={product.id} className="relative w-full">
-          <Image
-            src={product.img}
-            alt={`Product ${product.id}`}
-            layout="responsive"
-            width={100}
-            height={100}
-            objectFit="cover"
-          />
-        </div>
-      ))}
+    <div className="flex flex-col gap-4 mb-12">
+      <div>
+        <p className="text-[28px] font-[600]">
+          Men's Collection - BELT / TIES / SUNGLASSES
+        </p>
+      </div>
+      <div className="columns-2 gap-3 w-full mx-auto space-y-3 pb-10">
+        {productsData.map((product) => (
+          <div className="bg-gray-100 break-inside-avoid">
+            <Image src={product.Image} alt="Product Image" />
+          </div>
+        ))}
+      </div>
+
+      <div className="w-full flex items-center justify-center relative">
+        <button className="bg-black text-white text-[16px] px-14 py-4 rounded-[20px] w-fit">
+          Load More
+        </button>
+        <p className="text-right text-[16px] w-full absolute right-0">
+          Showing 11 results out of 12,000
+        </p>
+      </div>
     </div>
   );
 }

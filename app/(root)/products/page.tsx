@@ -7,9 +7,9 @@ export default function Products() {
   return (
     <>
       <SubHeader />
-      <div className="grid grid-cols-2 md:gap-6">
+      <div className="grid grid-cols-4 md:gap-6 mt-10">
         <SidePanel />
-        <div>
+        <div className="col-span-3">
           <ProductsList />
         </div>
       </div>

@@ -44,7 +44,7 @@ export default function SidePanel() {
     };
   
     return (
-      <div className="border-[1px] border-[#E6E6E8] rounded-[20px] px-6 py-4">
+      <div className="border-[1px] border-[#E6E6E8] rounded-[20px] px-6 py-4 h-fit">
         <h2 className="text-[24px] font-[500] mb-4">Main Category</h2>
         {categories.map((category, index) => (
           <div key={category.id}>
