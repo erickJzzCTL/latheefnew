@@ -97,7 +97,7 @@ export default function SubHeader() {
 
   return (
     <div className="container mx-auto">
-      <div className="flex md:gap-6 gap-2 justify-between md:mt-20 mt-6">
+      <div className="flex md:gap-6 gap-2 justify-between md:mt-10 mt-6">
         {data.map((item, index) => (
           <div
             key={index}
