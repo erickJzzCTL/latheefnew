@@ -7,10 +7,12 @@ export default function Products() {
   return (
     <>
       <SubHeader />
-      <div className="grid grid-cols-4 md:gap-6 mt-10">
-        <SidePanel />
-        <div className="col-span-3">
-          <ProductsList />
+      <div className="container mx-auto">
+        <div className="grid grid-cols-4 md:gap-6 mt-10">
+          <SidePanel />
+          <div className="col-span-3">
+            <ProductsList />
+          </div>
         </div>
       </div>
     </>
