@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useStore from "@/store/store";
 
 const categories = [
   {
@@ -38,7 +39,8 @@ const categories = [
 
 export default function SidePanel() {
   const [openCategory, setOpenCategory] = useState<number | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useStore((state) => state.isOpen);
+  const togglePanel = useStore((state) => state.togglePanel);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -56,13 +58,31 @@ export default function SidePanel() {
     setOpenCategory(openCategory === id ? null : id);
   };
 
-  const togglePanel = () => {
-    setIsOpen(!isOpen);
-  };
+  // const togglePanel = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const panelContent = (
     <div className="border-[1px] border-[#E6E6E8] md:rounded-[20px] px-6 py-4 md:h-fit h-full bg-white">
-      <h2 className="text-[24px] font-[500] mb-4">Main Category</h2>
+      <div className="flex justify-between items-center">
+        <p className="text-[24px] font-[500] mb-4">Main Category</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#000000"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-x cursor-pointer -mt-2"
+          onClick={togglePanel}
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </div>
       {categories.map((category, index) => (
         <div key={category.id}>
           <div

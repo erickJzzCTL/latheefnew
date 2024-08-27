@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import Image from "next/image";
 
@@ -13,6 +15,7 @@ import img9 from "../../assets/products/img9.png";
 import img10 from "../../assets/products/img10.png";
 import img11 from "../../assets/products/img11.png";
 import Link from "next/link";
+import useStore from "@/store/store";
 
 const MAX_COLUMNS = 4;
 
@@ -31,10 +34,15 @@ export default function ProductGrid() {
     { id: 11, Image: img11 },
   ];
 
+  const togglePanel = useStore((state) => state.togglePanel);
+
   return (
     <div className="flex flex-col gap-4 mb-12">
       <div className="flex items-center gap-4">
-        <div className="w-fit rounded-full bg-black p-2 cursor-pointer md:hidden block">
+        <div
+          onClick={togglePanel}
+          className="w-fit rounded-full bg-black p-2 cursor-pointer md:hidden block"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
