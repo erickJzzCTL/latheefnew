@@ -13,7 +13,7 @@ export default function ProductPage() {
   // For now, let's just display the ID
   return (
     <div className="container mx-auto">
-      <div className="flex md:flex-row flex-col gap-4 mt-12">
+      <div className="flex md:flex-row flex-col gap-4 mt-12 mb-12">
         <div className="rounded-[20px] overflow-hidden">
           <Image
             src={img1}
