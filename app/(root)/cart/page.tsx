@@ -59,10 +59,10 @@ export default function Cart() {
               </div>
               <div className="flex justify-center items-center">
                 <div className="flex space-x-2">
-                  <button className="bg-black text-white px-4 py-2 rounded-md text-[16px]">
+                  <button className="bg-black text-white px-5 py-2 rounded-md text-[14px] font-[500]">
                     Add to Favourites
                   </button>
-                  <button className="bg-[#e6e6e8] text-gray-800 px-4 py-2 rounded-md text-[16px]">
+                  <button className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-[14px] font-[500]">
                     Remove
                   </button>
                 </div>
@@ -70,7 +70,7 @@ export default function Cart() {
             </div>
           ))}
         </div>
-        <button className="bg-black text-white px-4 py-4 rounded-[20px] text-[16px] w-full mt-10">Enquire Now</button>
+        <button className="bg-black text-white px-4 py-4 rounded-[20px] text-[14px] w-full mt-10">Enquire Now</button>
       </div>
     </div>
   );
