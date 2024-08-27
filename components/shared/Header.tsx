@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import logo from '../../assets/home/logo.png';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation'; 
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +230,9 @@ const navsvgact = (
     />
   </svg>
 );
+
 const Header = () => {
+  const pathname = usePathname();
   const [isNavOpen, setIsNavOpen] = useState(false);
   return (
     <div className="header py-[6px] sm:py-[16px] border-b-[1px] border-b-[#E6E6E8]">
@@ -252,10 +254,14 @@ const Header = () => {
               </div>
             </button>
             <div className="flex gap-[24px]">
-              <div className="w-[48px] h-[48px]">{heartsvg}</div>
-              <div className="w-[48px] h-[48px]">{cartsvg}</div>
+            <Link href={'/wishlist'}>
+            <div className={`w-[48px] h-[48px] flex items-center rounded-full  ${pathname ==='/wishlist' && 'border-[1px] border-black'}`}>{heartsvg}</div>
+            </Link>
+            <Link href={'/cart'}>
+              <div className={`w-[48px] h-[48px] flex items-center rounded-full  ${pathname ==='/cart' && 'border-[1px] border-black'}`}>{cartsvg}</div>
+              </Link>
               <Link href={'/profile'}>
-              <div className="w-[48px] h-[48px] flex items-center">{usersvg}</div>
+              <div className={`w-[48px] h-[48px] flex items-center rounded-full  ${pathname ==='/profile' && 'border-[1px] border-black'}`}>{usersvg}</div>
               </Link>
             </div>
           </div>
@@ -286,10 +292,14 @@ const Header = () => {
               </div>
             </div>
             <div className="flex gap-[24px]">
-              <div className="">{heartsvgmob}</div>
-              <div className="">{cartsvgmob}</div>
+            <Link href={'/wishlist'}>
+            <div className={`w-[32px] h-[32px] flex items-center rounded-full  ${pathname ==='/wishlist' && 'border-[1px] border-black'}`}>{heartsvgmob}</div>
+            </Link>
+            <Link href={'/cart'}>
+              <div className={`w-[32px] h-[32px] flex items-center rounded-full  ${pathname ==='/cart' && 'border-[1px] border-black'}`}>{cartsvgmob}</div>
+              </Link>
               <Link href={'/profile'}>
-              <div className="h-[32px] w-[32px]">{usersvgmob}</div>
+              <div className={`w-[32px] h-[32px] flex items-center rounded-full  ${pathname ==='/profile' && 'border-[1px] border-black'}`}>{usersvgmob}</div>
               </Link>
             </div>
           </div>
