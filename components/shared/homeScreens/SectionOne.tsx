@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 const catArray = [
   { name: 'Men’s Collection', image: '/men.jpeg' },
   { name: 'Women’s Collection', image: '/women.jpeg' },
@@ -24,7 +25,7 @@ const SectionOne = () => {
   return (
     <div className="container mx-auto my-10">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-        <div className="relative">
+        <Link href="/categoryProduct/1" className="relative">
           <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
             <Image
               src={catArray[0].image}
@@ -42,8 +43,8 @@ const SectionOne = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="relative">
+        </Link>
+        <Link href="/categoryProduct/2" className="relative">
           <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
             <Image
               src={catArray[1].image}
@@ -61,8 +62,8 @@ const SectionOne = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="relative col-span-2 md:col-span-1">
+        </Link>
+        <Link href='/categoryProduct/3' className="relative col-span-2 md:col-span-1">
           <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
             <Image
               src={catArray[2].image}
@@ -101,7 +102,7 @@ const SectionOne = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

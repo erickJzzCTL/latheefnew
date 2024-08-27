@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import logo from '../../assets/home/logo.png';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -234,13 +236,15 @@ const Header = () => {
     <div className="header py-[6px] sm:py-[16px] border-b-[1px] border-b-[#E6E6E8]">
       <div className="container mx-auto">
         <div className="flex justify-between">
-          <div className="h-[67px] sm:h-[75px]">
+          <Link href={'/'}>
+          <div  className="h-[67px] sm:h-[75px]">
             <Image
               src={logo}
               alt="Logo.png"
               className="h-full w-full object-contain"
             />
-          </div>
+            </div>
+          </Link>
           <div className="gap-[40px] items-center hidden sm:flex">
             <button>
               <div className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl">
@@ -250,7 +254,9 @@ const Header = () => {
             <div className="flex gap-[24px]">
               <div className="w-[48px] h-[48px]">{heartsvg}</div>
               <div className="w-[48px] h-[48px]">{cartsvg}</div>
-              <div className="w-[48px] h-[48px]">{usersvg}</div>
+              <Link href={'/profile'}>
+              <div className="w-[48px] h-[48px] flex items-center">{usersvg}</div>
+              </Link>
             </div>
           </div>
           <div className="flex sm:hidden items-center">
@@ -282,7 +288,9 @@ const Header = () => {
             <div className="flex gap-[24px]">
               <div className="">{heartsvgmob}</div>
               <div className="">{cartsvgmob}</div>
+              <Link href={'/profile'}>
               <div className="h-[32px] w-[32px]">{usersvgmob}</div>
+              </Link>
             </div>
           </div>
         )}
