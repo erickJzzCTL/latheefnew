@@ -1,5 +1,6 @@
 import SectionOne from '@/components/shared/homeScreens/SectionOne';
 import SubHeader from '@/components/shared/SubHeader';
+import SectionTwo from '@/components/shared/homeScreens/SectionTwo';
 import React from 'react';
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <div>
       <SubHeader />
       <SectionOne />
+      <SectionTwo />
     </div>
   );
 }

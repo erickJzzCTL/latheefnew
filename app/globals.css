@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 
+:focus-visible {
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
 
 @media (min-width: 1536px) {
   .container {
