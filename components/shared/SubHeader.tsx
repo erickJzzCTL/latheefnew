@@ -1,7 +1,7 @@
 'use client';
 
 import useStore from "@/store/store";
-import { log } from "console";
+
 
 type HomeDataItem = {
   image: string;
