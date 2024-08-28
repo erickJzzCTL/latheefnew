@@ -7,6 +7,11 @@
   outline: -webkit-focus-ring-color auto 0px !important;
 }
 
+@media (min-width: 1280px) {
+  .container {
+      max-width: 1080px;
+  }
+}
 
 @media (min-width: 1536px) {
   .container {
