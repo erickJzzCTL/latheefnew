@@ -16,7 +16,7 @@ const cartItems = [
 export default function Wishlist() {
   return (
     <div className="bg-[#f0f0f0]">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pt-8 pb-16">
         <h1 className="text-[32px] font-[600] mb-2">Wishlist (07)</h1>
         <p className="text-gray-600 mb-10 text-[14px]">
           <Link href="/" className="hover:underline">

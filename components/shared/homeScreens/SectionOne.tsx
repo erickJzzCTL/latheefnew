@@ -23,7 +23,7 @@ const navsvg = (
 );
 const SectionOne = () => {
   return (
-    <div className="container mx-auto my-10">
+    <div className="container mx-auto mt-10 mb-24">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
         <Link href="/categoryProduct/1" className="relative">
           <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">

@@ -28,7 +28,7 @@ function SectionTwo() {
   return (
     <div className="bg-[#E6E6E8]">
       <div className="container mx-auto">
-        <div className="py-4 sm:py-10">
+        <div className="py-4 sm:py-16">
           <h1 className="text-[40px] font-semibold text-center hidden sm:block">
             Featured Categories
           </h1>
