@@ -1,3 +1,5 @@
+'use client';
+
 export const authToken = () => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
