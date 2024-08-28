@@ -35,7 +35,7 @@ function SectionTwo() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-10">
             {catArray?.map((item, i) => {
               return (
-                <div className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative">
+                <div key={i} className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative">
                   <Image
                     src={item.image}
                     className="h-full w-full object-cover"

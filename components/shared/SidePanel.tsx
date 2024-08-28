@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useStore from "@/store/store";
 
 const categories = [
   {
@@ -37,66 +38,130 @@ const categories = [
 ];
 
 export default function SidePanel() {
-    const [openCategory, setOpenCategory] = useState<number | null>(null);
-  
-    const toggleCategory = (id: number) => {
-      setOpenCategory(openCategory === id ? null : id);
+  const [openCategory, setOpenCategory] = useState<number | null>(null);
+  const isOpen = useStore((state) => state.isOpen);
+  const togglePanel = useStore((state) => state.togglePanel);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
-  
-    return (
-      <div className="border-[1px] border-[#E6E6E8] rounded-[20px] px-6 py-4 h-fit">
-        <h2 className="text-[24px] font-[500] mb-4">Main Category</h2>
-        {categories.map((category, index) => (
-          <div key={category.id}>
-            <div
-              className={`py-3 flex justify-between items-center cursor-pointer ${
-                index !== categories.length - 1 ? 'border-b border-[#E6E6E8]' : ''
-              }`}
-              onClick={() => toggleCategory(category.id)}
-            >
-              <span>{category.name}</span>
-              <motion.span
-                className="text-gray-400"
-                animate={{ rotate: openCategory === category.id ? 0 : -90 }}
-                transition={{ duration: 0.3 }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </motion.span>
-            </div>
-            <AnimatePresence>
-              {openCategory === category.id && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="pl-4 py-2">
-                    {category.subcategories.map((sub, index) => (
-                      <div key={index} className="py-2 cursor-pointer">
-                        {sub}
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const toggleCategory = (id: number) => {
+    setOpenCategory(openCategory === id ? null : id);
+  };
+
+  // const togglePanel = () => {
+  //   setIsOpen(!isOpen);
+  // };
+
+  const panelContent = (
+    <div className="border-[1px] border-[#E6E6E8] md:rounded-[20px] px-6 py-4 md:h-fit h-full bg-white">
+      <div className="flex justify-between items-center">
+        <p className="text-[24px] font-[500] mb-4">Main Category</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#000000"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-x cursor-pointer -mt-2"
+          onClick={togglePanel}
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
       </div>
-    );
-  }
+      {categories.map((category, index) => (
+        <div key={category.id}>
+          <div
+            className={`py-3 flex justify-between items-center cursor-pointer ${
+              index !== categories.length - 1 ? "border-b border-[#E6E6E8]" : ""
+            }`}
+            onClick={() => toggleCategory(category.id)}
+          >
+            <span>{category.name}</span>
+            <motion.span
+              className="text-gray-400"
+              animate={{ rotate: openCategory === category.id ? 0 : -90 }}
+              transition={{ duration: 0.3 }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </motion.span>
+          </div>
+          <AnimatePresence>
+            {openCategory === category.id && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="pl-4 py-2">
+                  {category.subcategories.map((sub, index) => (
+                    <div key={index} className="py-2 cursor-pointer">
+                      {sub}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <>
+      {isMobile ? (
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="fixed top-0 left-0 h-full w-4/5 max-w-sm z-40 overflow-y-auto"
+            >
+              {panelContent}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      ) : (
+        panelContent
+      )}
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={togglePanel}
+        />
+      )}
+    </>
+  );
+}

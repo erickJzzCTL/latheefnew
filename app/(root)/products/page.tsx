@@ -8,7 +8,7 @@ export default function Products() {
     <>
       <SubHeader />
       <div className="container mx-auto">
-        <div className="grid grid-cols-4 md:gap-6 mt-10">
+        <div className="grid md:grid-cols-4 md:gap-6 md:mt-10 mt-5">
           <SidePanel />
           <div className="col-span-3">
             <ProductsList />
