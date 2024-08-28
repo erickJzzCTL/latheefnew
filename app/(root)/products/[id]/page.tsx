@@ -14,7 +14,7 @@ export default function ProductPage() {
   return (
     <div className="container mx-auto">
       <div className="flex md:flex-row flex-col gap-4 mt-12 mb-12">
-        <div className="rounded-[20px] overflow-hidden">
+        <div className="rounded-[20px] overflow-hidden h-full w-full">
           <Image
             src={img1}
             alt={`Product ${productId}`}
