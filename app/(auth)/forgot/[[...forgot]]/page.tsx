@@ -320,12 +320,14 @@ const CreatePassword = () => {
             </button>
           </div>
         </div>
-        <button
-          type="submit"
-          className="w-full bg-black text-white text-[14px] py-3 px-4 rounded-[12px] hover:bg-gray-800 transition duration-300"
-        >
-          Continue
-        </button>
+        <Link href={"/passwordChangeSuccess"}>
+          <button
+            // type="submit"
+            className="w-full bg-black text-white text-[14px] py-3 px-4 rounded-[12px] hover:bg-gray-800 transition duration-300"
+          >
+            Continue
+          </button>
+        </Link>
       </form>
     </div>
   );

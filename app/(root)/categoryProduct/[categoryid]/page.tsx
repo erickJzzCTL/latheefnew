@@ -27,7 +27,7 @@ const navsvg = (
   </svg>
 );
 
-const categoryid = ({params}: paramsType) => {
+const categoryProduct = ({params}: paramsType) => {
   return (
     <div className='bg-[#F0F0F0]'>
       <div className="container mx-auto">
@@ -62,4 +62,4 @@ const categoryid = ({params}: paramsType) => {
   )
 }
 
-export default categoryid
+export default categoryProduct
