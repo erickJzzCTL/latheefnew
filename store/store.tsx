@@ -9,6 +9,8 @@ const useStore = create<PanelState>((set) => ({
   //   Sidepanel Toggle
   isOpen: false,
   togglePanel: () => set((state) => ({ isOpen: !state.isOpen })),
+
+  
 }));
 
 export default useStore;

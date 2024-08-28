@@ -62,12 +62,12 @@ export default function ProductGrid() {
         </div>
 
         <p className="md:text-[28px] text-[14px] font-[600]">
-          Men's Collection - BELT / TIES / SUNGLASSES
+          Men&apos;s Collection - BELT / TIES / SUNGLASSES
         </p>
       </div>
       <div className="columns-2 gap-3 w-full mx-auto space-y-3 md:pb-10 pb-4">
-        {productsData.map((product) => (
-          <div className="bg-gray-100 break-inside-avoid">
+        {productsData.map((product, index) => (
+          <div key={index} className="bg-gray-100 break-inside-avoid">
             <Link href={`/products/${product.id}`}>
               <Image src={product.Image} alt="Product Image" />
             </Link>

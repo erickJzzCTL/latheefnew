@@ -1,6 +1,7 @@
 type paramsType = {params: {categoryid: string}}
 import React from 'react'
 import Image from 'next/image';
+import Link from 'next/link';
 const catArray = [
   { name: 'Dress & T- Shirts', image: '/women2.jpeg' },
   { name: 'Jewellery', image: '/f2.jpeg' },
@@ -35,7 +36,7 @@ const categoryid = ({params}: paramsType) => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-10">
             {catArray?.map((item, i) => {
               return (
-                <div className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative">
+                <div key={i} className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative">
                   <Image
                     src={item.image}
                     className="h-full w-full object-cover"
@@ -46,9 +47,9 @@ const categoryid = ({params}: paramsType) => {
                   <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4">
                     <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[10px] sm:text-[14px] lg:text-[18px] flex justify-between items-center">
                       <h1> {catArray[1].name}</h1>
-                      <div className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center">
+                      <Link href={"/products/1"} className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center">
                         {navsvg}
-                      </div>
+                      </Link>
                     </div>
                   </div>
                 </div>

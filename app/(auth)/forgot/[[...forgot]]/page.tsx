@@ -141,7 +141,7 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
       </form>
 
       <div className="mt-6 text-center">
-        <span className="text-sm text-gray-600">Didn't get code? </span>
+        <span className="text-sm text-gray-600">Didn&apos;t get code? </span>
         <a
           href="#"
           className="text-sm text-black font-[500] hover:underline ml-2"

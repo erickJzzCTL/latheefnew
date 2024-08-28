@@ -1,14 +1,14 @@
 "use client"; 
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import signupimage from '../../../../assets/signup/signupimage.jpeg'
 import logo from '../../../../assets/home/logo.png'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
-const login = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
+const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
 
     return (
         <div className='container mx-auto mb-10 sm:mb-0'>
@@ -44,11 +44,11 @@ const login = () => {
             </div>
             <div className="flex justify-end w-full"><h1>Forgot Password? </h1></div>
             <button className='bg-black text-white rounded-lg h-[50px] w-full'>Submit</button>
-            <div className="flex justify-center"><h1><span>Don't have an account?</span><span className='ml-2 font-bold'>Signup</span></h1></div>
+            <div className="flex justify-center"><h1><span>Don&apos;t have an account?</span><span className='ml-2 font-bold'>Signup</span></h1></div>
             </div>
           </div>
         </div>
       )
 }
 
-export default login
+export default Login
