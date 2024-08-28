@@ -76,7 +76,7 @@ export default function SidePanel() {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          className="lucide lucide-x cursor-pointer -mt-2"
+          className="lucide lucide-x cursor-pointer -mt-2 md:hidden block"
           onClick={togglePanel}
         >
           <path d="M18 6 6 18" />
