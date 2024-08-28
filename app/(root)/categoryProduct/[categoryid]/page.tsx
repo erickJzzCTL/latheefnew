@@ -47,7 +47,7 @@ const categoryid = ({params}: paramsType) => {
                   <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4">
                     <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[10px] sm:text-[14px] lg:text-[18px] flex justify-between items-center">
                       <h1> {catArray[1].name}</h1>
-                      <Link href={"/products/1"} className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center">
+                      <Link href={"/categoryFilter/1"} className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center">
                         {navsvg}
                       </Link>
                     </div>
