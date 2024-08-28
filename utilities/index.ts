@@ -1,8 +1,10 @@
 export const authToken = () => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    return true;
-  } else {
-    return false;
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      return true;
+    } else {
+      return false;
+    }
   }
 };
