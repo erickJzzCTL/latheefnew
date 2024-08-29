@@ -4,6 +4,8 @@ import Image from "next/image";
 import logo from "../../assets/home/logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useStore from "@/store/store";
+import SignInPopup from "./popups/SignInPopup";
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -232,11 +234,16 @@ const navsvgact = (
 );
 
 const Header = () => {
+  const [isModalOpen, setIsModalOpen] = useStore(
+    (state) => [state.isModalOpen, state.setIsModalOpen] as [boolean, (open: boolean) => void]
+  );
+  
   const pathname = usePathname();
   const [isNavOpen, setIsNavOpen] = useState(false);
   return (
     <div className="header py-[6px] sm:py-[16px] border-b-[1px] border-b-[#E6E6E8]">
-      <div className="container mx-auto">
+      <div className="container mx-auto">       
+        <SignInPopup />
         <div className="flex justify-between">
           <Link href={"/"}>
             <div className="h-[67px] sm:h-[85px]">
@@ -281,6 +288,15 @@ const Header = () => {
                   {usersvg}
                 </div>
               </Link>
+              
+                <div onClick={() => setIsModalOpen(true)} 
+                  className={`w-[48px] h-[48px] flex items-center rounded-full  ${
+                    pathname === "/profile" && "border-[1px] border-black"
+                  }`}
+                >
+                  {usersvg}
+                </div>
+              
             </div>
           </div>
           <div className="flex sm:hidden items-center">

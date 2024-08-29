@@ -1,20 +1,41 @@
-"use client";
+'use client';
 
-import React from "react";
+interface SignupFieldProps {
+    isSignInModalOpen: boolean;
+    setSignInModalOpen: (open: boolean) => void;
+    isSignUpModalOpen: boolean;
+    setSignUpModalOpen: (open: boolean) => void;
+  }
+  
+import React, { useState } from 'react';
+import { Modal } from 'antd';
 import Image from "next/image";
-import signuptwoimage from "../../../../assets/signup/signuptwoimage.jpeg";
-import logo from "../../../../assets/home/logo.png";
+import signuptwoimage from '../../../../assets/signup/signuptwoimage.jpeg';
+import logo from "../../../assets/home/logo.png";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import Link from "next/link";
-export default function Signup() {
-  const [showPassword, setShowPassword] = React.useState(false);
+import useStore from '@/store/store';
+import Link from 'next/link';
+
+export default function SignupField({
+    isSignInModalOpen,
+    setSignInModalOpen,
+    isSignUpModalOpen,
+    setSignUpModalOpen,
+  }: SignupFieldProps) {
+
+    const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
 
+  const LoginFn = () => {
+    setSignInModalOpen(!isSignInModalOpen);
+    setSignUpModalOpen(!isSignUpModalOpen);
+  }
+
   return (
-    <div className="container mx-auto mb-10 sm:mb-0">
+    <div className="mb-10 sm:mb-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-8">
-        <div className="h-[60vh]  sm:h-[100vh] mt-6 sm:mt-0 rounded-xl sm:rounded-none overflow-hidden">
+        <div className="h-[60vh]  sm:h-[90vh] mt-6 sm:mt-0 rounded-xl sm:rounded-none overflow-hidden">
           <Image
             src={signuptwoimage}
             alt="lathif signin banner"
@@ -43,6 +64,7 @@ export default function Signup() {
               placeholder="Email"
             ></input>
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-4 w-full">
           <div className="flex flex-col gap-3 w-full">
             <label className="text-[rgba(27, 37, 89, 0.80] text-[18px] font-semibold">
               Password
@@ -95,17 +117,18 @@ export default function Signup() {
               </div>
             </div>
           </div>
-          <Link className="w-full" href={"/loginSuccess"}>
-            <button className="bg-black text-white rounded-lg h-[50px] w-full">
+          </div>
+          {/* <Link className="w-full" href={"/loginSuccess"}> */}
+            <button className="bg-black text-white rounded-lg h-[50px] w-full mt-6">
               Submit
             </button>
-          </Link>
+          {/* </Link> */}
           <div className="flex justify-center">
             <h1>
               <span>Already have an account?</span>
-              <Link href={"/login"} className="ml-2 font-bold">
+              <span  onClick={LoginFn} className="ml-2 font-bold cursor-pointer">
                 Login
-              </Link>
+              </span>
             </h1>
           </div>
         </div>

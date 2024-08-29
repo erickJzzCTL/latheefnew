@@ -3,7 +3,7 @@ import SidePanel from "@/components/shared/SidePanel";
 import SubHeader from "@/components/shared/SubHeader";
 import React from "react";
 
-export default function Products() {
+export default function categoryFilter() {
   return (
     <>
       <SubHeader />

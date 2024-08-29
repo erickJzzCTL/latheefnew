@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import banner from "../../../../assets/signin/banner.png";
-import logo from "../../../../assets/home/logo.png";
+import banner from "../../../assets/signin/banner.png";
+import logo from "../../../assets/home/logo.png";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
