@@ -6,6 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useStore from "@/store/store";
 import SignInPopup from "./popups/SignInPopup";
+import { useSetHomeData } from "@/hooks/useHomeData";
+import { AxiosResponse } from "axios";
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -233,16 +235,33 @@ const navsvgact = (
   </svg>
 );
 
+interface HomeData {
+  homepage_titles: any[];
+  main_categories: any[];
+  whatsapp_number: string;
+}
+
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useStore(
-    (state) => [state.isModalOpen, state.setIsModalOpen] as [boolean, (open: boolean) => void]
+    (state) =>
+      [state.isModalOpen, state.setIsModalOpen] as [
+        boolean,
+        (open: boolean) => void
+      ]
   );
-  
+
   const pathname = usePathname();
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+  const { homeData } = useSetHomeData() as {
+    homeData: AxiosResponse<HomeData> | undefined;
+  };
+
+  const whatsappNumber = homeData?.data.whatsapp_number;
+
   return (
     <div className="header py-[6px] sm:py-[16px] border-b-[1px] border-b-[#E6E6E8]">
-      <div className="container mx-auto">       
+      <div className="container mx-auto">
         <SignInPopup />
         <div className="flex justify-between">
           <Link href={"/"}>
@@ -256,8 +275,11 @@ const Header = () => {
           </Link>
           <div className="gap-[40px] items-center hidden sm:flex">
             <button>
-              <Link href={'/login'} className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl">
-                {whatsappsvg} <h1 className="ml-2">+971557843002</h1>
+              <Link
+                href={"/login"}
+                className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl"
+              >
+                {whatsappsvg} <h1 className="ml-2">+91{whatsappNumber}</h1>
               </Link>
             </button>
             <div className="flex gap-[24px]">
@@ -288,15 +310,15 @@ const Header = () => {
                   {usersvg}
                 </div>
               </Link>
-              
-                <div onClick={() => setIsModalOpen(true)} 
-                  className={`w-[48px] h-[48px] flex items-center rounded-full  ${
-                    pathname === "/profile" && "border-[1px] border-black"
-                  }`}
-                >
-                  {usersvg}
-                </div>
-              
+
+              <div
+                onClick={() => setIsModalOpen(true)}
+                className={`w-[48px] h-[48px] flex items-center rounded-full  ${
+                  pathname === "/profile" && "border-[1px] border-black"
+                }`}
+              >
+                {usersvg}
+              </div>
             </div>
           </div>
           <div className="flex sm:hidden items-center">
