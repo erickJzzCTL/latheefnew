@@ -22,7 +22,7 @@ export default function Signin() {
   return (
     <div className="container mx-auto mb-10 sm:mb-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-8">
-        <div className="h-[90vh] sm:h-[100vh]">
+        <div className="h-[80vh] sm:h-[100vh]">
           <Image
             src={banner}
             alt="lathif signin banner"
