@@ -1,13 +1,13 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 const catArray = [
-  { name: 'Dress & T- Shirts', image: '/women2.jpeg' },
-  { name: 'Jewellery', image: '/f2.jpeg' },
-  { name: 'Accessories', image: '/f3.jpeg' },
-  { name: 'Shoes & Sandals', image: '/f4.jpeg' },
-  { name: 'Women Watches', image: '/f5.jpeg' },
-  { name: 'Designer Bag’s', image: '/f6.jpeg' },
-  { name: 'Men Watches', image: '/f7.jpeg' },
+  { name: "Dress & T- Shirts", image: "/women2.jpeg" },
+  { name: "Jewellery", image: "/f2.jpeg" },
+  { name: "Accessories", image: "/f3.jpeg" },
+  { name: "Shoes & Sandals", image: "/f4.jpeg" },
+  { name: "Women Watches", image: "/f5.jpeg" },
+  { name: "Designer Bag’s", image: "/f6.jpeg" },
+  { name: "Men Watches", image: "/f7.jpeg" },
 ];
 
 const navsvg = (
@@ -28,14 +28,17 @@ function SectionTwo() {
   return (
     <div className="bg-[#E6E6E8]">
       <div className="container mx-auto">
-        <div className="py-4 sm:py-16">
-          <h1 className="text-[40px] font-semibold text-center hidden sm:block">
+        <div className="py-5 sm:py-16">
+          <h1 className="md:text-[40px] text-[20px] font-semibold text-center">
             Featured Categories
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:mt-10 mt-6">
             {catArray?.map((item, i) => {
               return (
-                <div key={i} className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative">
+                <div
+                  key={i}
+                  className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative"
+                >
                   <Image
                     src={item.image}
                     className="h-full w-full object-cover"
