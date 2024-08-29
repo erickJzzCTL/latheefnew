@@ -13,11 +13,12 @@ interface PanelState {
 const useStore = create<PanelState>((set) => ({
   isOpen: false,
   togglePanel: () => set((state) => ({ isOpen: !state.isOpen })),
-  homeData: {},
-  setHomeData: (data) => set({ homeData: data }),
 
   isModalOpen: false,
   setIsModalOpen: () => set((state) => ({ isModalOpen: !state.isModalOpen })),
+
+  homeData: {},
+  setHomeData: (data) => set({ homeData: data }),
 
 
 }));
