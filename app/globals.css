@@ -7,6 +7,20 @@
   outline: -webkit-focus-ring-color auto 0px !important;
 }
 
+.popup-class {
+  width: 90% !important;
+  top: 36px !important;
+}
+.ant-modal .ant-modal-content {
+  padding: 0px 20px 0px 0px;
+}
+
+@media(max-width: 640px) {
+  .ant-modal .ant-modal-content {
+    padding: 20px 20px 20px 20px;
+  }
+}
+
 @media (min-width: 1280px) {
   .container {
       max-width: 1080px;
