@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const customAxios = axios.create({
-    baseURL: "http://192.168.29.245:8000/",
-    timeout: 100000,
+    baseURL: "https://latheefadmin.zybotech.in/",
+    timeout: 10000,
 });
 
 
