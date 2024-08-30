@@ -1,13 +1,14 @@
 "use client";
 
+import { deleteCookie } from 'cookies-next';
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const Profile = () => {
   const router = useRouter();
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    router.push("/signin");
+    deleteCookie('userToken');
+    router.push("/");
   };
 
   return (

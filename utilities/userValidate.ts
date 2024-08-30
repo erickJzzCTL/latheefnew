@@ -10,7 +10,7 @@ interface JwtPayload {
 
 const userValidate = (): boolean => {
   const token = getCookie('userToken') as string | undefined;
-  console.log('token is', token);
+//   console.log('token is', token);
   
   if (!token) {
     return false;
