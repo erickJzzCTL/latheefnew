@@ -17,7 +17,10 @@ interface LoginInput {
 
 export default function Signin() {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
-  const [userData, setUserData] = React.useState<LoginInput>({ name: "", password: "" });
+  const [userData, setUserData] = React.useState<LoginInput>({
+    name: "",
+    password: "",
+  });
   const router = useRouter();
   const { data, error, isLoading, refetch } = useGuestLogin(userData);
  
@@ -35,7 +38,10 @@ export default function Signin() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof LoginInput) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: keyof LoginInput
+  ) => {
     setUserData({ ...userData, [key]: e.target.value });
   };
 
@@ -65,7 +71,7 @@ export default function Signin() {
               className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4 text-[14px] placeholder:text-[14px]"
               placeholder="Name"
               value={userData.name}
-              onChange={(e) => handleChange(e, 'name')}
+              onChange={(e) => handleChange(e, "name")}
             />
           </div>
           <div className="flex flex-col gap-3 w-full">
@@ -86,7 +92,7 @@ export default function Signin() {
                 placeholder="Password"
                 type={showPassword ? "text" : "password"}
                 value={userData.password}
-                onChange={(e) => handleChange(e, 'password')}
+                onChange={(e) => handleChange(e, "password")}
               />
               <div
                 className="absolute top-0 right-0 h-full flex items-center pr-4 cursor-pointer"
