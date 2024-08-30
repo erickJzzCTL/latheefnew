@@ -1,13 +1,13 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery, UseQueryResult, UseQueryOptions } from "@tanstack/react-query";
 import axios from "@/utilities/customaxios";
+import { setCookie } from 'cookies-next';
 
-// Define the structure of the input data that will be sent to the API
+
 interface LoginInput {
   name: string;
   password: string;
 }
 
-// Define the expected structure of the user data
 interface UserData {
   token: string;
   message: string;
@@ -20,9 +20,21 @@ export const fetchGuestLoginData = async (userData: LoginInput): Promise<UserDat
 };
 
 export const useGuestLogin = (userData: LoginInput): UseQueryResult<UserData, Error> => {
-  return useQuery<UserData, Error>({
-    queryKey: ["userData", userData],
+  const queryOptions: UseQueryOptions<UserData, Error, UserData, [string, LoginInput]> = {
+    queryKey: ["guestLogin", userData],
     queryFn: () => fetchGuestLoginData(userData),
-    enabled: !!userData.name && !!userData.password // Only run query if userData is not empty
+    enabled: !!userData.name && !!userData.password,
+  };
+
+  return useQuery(queryOptions);
+};
+
+// Separate function to handle successful login
+export const handleSuccessfulLogin = (data: UserData) => {
+    const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + 2);
+  setCookie('guestToken', data.token, { 
+    path: '/',
+    expires: expiryDate
   });
 };

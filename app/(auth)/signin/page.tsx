@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import banner from "../../../assets/signin/banner.png";
 import logo from "../../../assets/home/logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { useGuestLogin } from "@/hooks/guestLogin";
+import { useGuestLogin,handleSuccessfulLogin  } from "@/hooks/guestLogin";
+import { getCookie } from 'cookies-next';
 
 // Define the structure of the input data
 interface LoginInput {
@@ -19,14 +20,15 @@ export default function Signin() {
   const [userData, setUserData] = React.useState<LoginInput>({ name: "", password: "" });
   const router = useRouter();
   const { data, error, isLoading, refetch } = useGuestLogin(userData);
-
+ 
   const handleSubmit = async () => {
     try {
       // Trigger refetch or query update if userData is valid
       const result = await refetch();
-      if (result.data?.token && result.data?.message === "success") {
-        localStorage.setItem("guestToken", result.data.token);
-        router.push("/");
+      if (result.data && result.data?.message === "success") {
+        handleSuccessfulLogin(result.data);
+        // router.push("/");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error during login:", error);

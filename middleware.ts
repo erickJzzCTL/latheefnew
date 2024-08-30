@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { authToken } from './utilities/index';
 
-const isAuthenticated = false; // Replace with your actual authentication logic
-
-export function middleware(request: NextRequest) {
+export function middleware(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
-  if (isAuthenticated) {
+  if (authToken(request)) {
     if (pathname === '/signin') {
       return NextResponse.redirect(new URL('/', request.url));
     }

@@ -1,8 +1,13 @@
+interface ThanksProps {
+  handleCancel: () => void;
+}
+
 import Image from "next/image";
 import signupimage from "../../../../assets/signup/loginsuccess.jpeg";
 import Link from "next/link";
 
-const SignInSuccess = () => {
+const SignInSuccess = (  { handleCancel }: ThanksProps) => {
+
   return (
     <div className=" mb-10 sm:mb-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-8">
@@ -19,11 +24,11 @@ const SignInSuccess = () => {
             Your luxurious watch account has
             <br /> been created successfully!{" "}
           </p>
-          <Link href="/">
-            <button className="bg-black text-white rounded-lg h-[50px] w-full">
+
+            <button className="bg-black text-white rounded-lg h-[50px] w-full" onClick={()=>{handleCancel()}}>
               Continue
             </button>
-          </Link>
+
         </div>
       </div>
     </div>
