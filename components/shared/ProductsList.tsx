@@ -2,39 +2,43 @@
 
 import React from "react";
 import Image from "next/image";
-
-import img1 from "../../assets/products/img1.png";
-import img2 from "../../assets/products/img2.png";
-import img3 from "../../assets/products/img3.png";
-import img4 from "../../assets/products/img4.png";
-import img5 from "../../assets/products/img5.png";
-import img6 from "../../assets/products/img6.png";
-import img7 from "../../assets/products/img7.png";
-import img8 from "../../assets/products/img8.png";
-import img9 from "../../assets/products/img9.png";
-import img10 from "../../assets/products/img10.png";
-import img11 from "../../assets/products/img11.png";
 import Link from "next/link";
 import useStore from "@/store/store";
+import { useSubCategoryProducts } from "@/hooks/useSubCategoryProducts";
 
-const MAX_COLUMNS = 4;
+interface Product {
+  id: number;
+  image: string;
+  date: string;
+  is_active: boolean;
+  maincategory: number;
+  productcategory: number;
+}
 
 export default function ProductGrid() {
-  const productsData = [
-    { id: 1, Image: img1 },
-    { id: 2, Image: img2 },
-    { id: 3, Image: img3 },
-    { id: 4, Image: img4 },
-    { id: 5, Image: img5 },
-    { id: 6, Image: img6 },
-    { id: 7, Image: img7 },
-    { id: 8, Image: img8 },
-    { id: 9, Image: img9 },
-    { id: 10, Image: img10 },
-    { id: 11, Image: img11 },
-  ];
-
   const togglePanel = useStore((state) => state.togglePanel);
+  const selectedSubcategory = useStore((state) => state.selectedSubcategory);
+
+  // Ensure categoryId is a valid string
+  const categoryId = selectedSubcategory || ""; // Keep as string
+
+  const { data, isLoading, error } = useSubCategoryProducts(categoryId);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading products: {error.message}</div>; // Display error message
+
+  const products = data?.data.products || [];
+  const subcategoryName = data?.data.subcategory_name || "Products";
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex justify-center items-center">
+        <p className="md:text-[28px] text-[14px] font-[600] mt-[10%]">
+          No products found
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4 mb-12">
@@ -50,9 +54,9 @@ export default function ProductGrid() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="#ffffff"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-menu"
           >
             <line x1="4" x2="20" y1="12" y2="12" />
@@ -62,14 +66,20 @@ export default function ProductGrid() {
         </div>
 
         <p className="md:text-[28px] text-[14px] font-[600]">
-          Men&apos;s Collection - BELT / TIES / SUNGLASSES
+          {subcategoryName}
         </p>
       </div>
       <div className="columns-2 gap-3 w-full mx-auto space-y-3 md:pb-10 pb-4">
-        {productsData.map((product, index) => (
-          <div key={index} className="bg-gray-100 break-inside-avoid">
+        {products.map((product: Product) => (
+          <div key={product.id} className="bg-gray-100 break-inside-avoid rounded-[20px] overflow-hidden">
             <Link href={`/products/${product.id}`}>
-              <Image src={product.Image} alt="Product Image" />
+              <Image
+                src={product.image}
+                alt="Product Image"
+                width={500}
+                height={500}
+                className="object-contain w-full h-auto"
+              />
             </Link>
           </div>
         ))}
@@ -80,7 +90,7 @@ export default function ProductGrid() {
           Load More
         </button>
         <p className="md:text-right text-center text-[16px] w-full md:absolute md:right-0">
-          Showing 11 results out of 12,000
+          Showing {products.length} results
         </p>
       </div>
     </div>

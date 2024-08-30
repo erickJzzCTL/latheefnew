@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSubCategories } from "@/hooks/useSubCategoryData";
+import useStore from "@/store/store";
 
 type ParamsType = { params: { categoryid: string } };
 
@@ -24,21 +25,23 @@ const navsvg = (
 
 const CategoryProduct: React.FC<ParamsType> = ({ params }) => {
   const { data, isLoading, error } = useSubCategories(params.categoryid);
+  const { setSelectedSubcategory } = useStore(); // Get the setSelectedSubcategory function from the store
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
 
-  const products = data?.data.products || [];
+  const subcategories = data?.data.subcategories || [];
+  const product_collection = data?.data.maincategory_name || "Collections";
 
   return (
     <div className="bg-[#F0F0F0]">
       <div className="container mx-auto">
         <h1 className="text-center sm:text-left text-[20px] sm:text-[30px] md:text-[40px] font-semibold pt-6 sm:pt-10">
-          Product Collection
+          {product_collection} Collection
         </h1>
         <div className="pt-4 pb-14">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-10">
-            {products.map((item) => (
+            {subcategories.map((item) => (
               <div
                 key={item.id}
                 className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative"
@@ -52,10 +55,11 @@ const CategoryProduct: React.FC<ParamsType> = ({ params }) => {
                 />
                 <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4">
                   <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[10px] sm:text-[14px] lg:text-[18px] flex justify-between items-center">
-                    <h1>Product {item.id}</h1>
+                    <h1>{item.name}</h1>
                     <Link
                       href={`/categoryFilter/${item.id}`}
                       className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center"
+                      onClick={() => setSelectedSubcategory(item.id.toString())}
                     >
                       {navsvg}
                     </Link>

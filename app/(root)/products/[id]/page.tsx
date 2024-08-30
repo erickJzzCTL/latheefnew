@@ -4,21 +4,36 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 
 import img1 from "../../../../assets/products/img1.png";
+import { useProduct } from "@/hooks/useProduct";
 
 export default function ProductPage() {
   const params = useParams();
-  const productId = params.id;
+  const productId = params.id as string; // Type-cast to string, since useParams returns string | undefined
 
-  // Here you would fetch the product data based on the ID
-  // For now, let's just display the ID
+  const { data, isLoading, isError, error } = useProduct(productId);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <div>No product found.</div>;
+  }
+
   return (
     <div className="container mx-auto">
       <div className="flex md:flex-row flex-col gap-4 mt-12 mb-12">
         <div className="rounded-[20px] overflow-hidden h-full w-full">
           <Image
-            src={img1}
+            src={data.image || img1} // Use the image from API or fallback
             alt={`Product ${productId}`}
             className="w-full h-full object-cover"
+            width={1000} // Set width and height based on your needs
+            height={1000}
           />
         </div>
         <div className="bg-black px-4 md:py-10 py-4 md:h-[70vh] rounded-[20px] flex md:flex-col flex-row justify-between">
