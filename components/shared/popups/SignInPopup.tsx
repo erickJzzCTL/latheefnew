@@ -11,6 +11,7 @@ import useStore from '@/store/store';
 import Link from 'next/link';
 import SignupField from './signupField/SignupField';
 import SignInSuccess from './signInSuccess/SignInSuccess';
+import { useUserLogin, handleUserSuccessfulLogin } from '@/hooks/userLogin';
 
 
 export default function SignInPopup() {
@@ -46,11 +47,7 @@ const [isSignInSuccessOpen, setSignInSuccessOpen] = useState<boolean>(false);
     setSignInModalOpen(false);
     setSignUpModalOpen(false);
   }
-  const handleSubmit = () => {
-    localStorage.setItem('token', 'true');
-    setIsModalOpen(false);
-  setSignUpModalOpen(false);
-  };
+
 // ---------------MODAL DATA --------------------
 
 const SignUpPopupFn = () => {
@@ -58,6 +55,33 @@ const SignUpPopupFn = () => {
   setSignInModalOpen(!isSignInModalOpen);
   setSignUpModalOpen(!isSignUpModalOpen);
 }
+
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+const [userData, setUserData] = React.useState<LoginInput>({ email: "", password: "" });
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof LoginInput) => {
+  setUserData({ ...userData, [key]: e.target.value });
+};
+
+const { data, error, isLoading, refetch } = useUserLogin(userData);
+
+const handleSubmit = async () => {
+  try {
+    // Trigger refetch or query update if userData is valid
+    const result = await refetch();
+    if (result.data && result.data?.message === "Login Successfull") {
+      handleUserSuccessfulLogin(result.data);
+      setSignInSuccessOpen(!isSignInSuccessOpen);
+      setSignInModalOpen(false);
+      setSignUpModalOpen(false);
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+  }
+};
   return (
     <div>
        <Modal 
@@ -87,7 +111,8 @@ className='popup-class'
             </label>
             <input
               className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4"
-              placeholder="Name"
+              placeholder="Email"
+              onChange={(e) => handleChange(e, 'email')}
             ></input>
           </div>
           <div className="flex flex-col gap-3 w-full">
@@ -107,6 +132,7 @@ className='popup-class'
                 className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4 no-eye-icon"
                 placeholder="Password"
                 type={showPassword ? "text" : "password"}
+                onChange={(e) => handleChange(e, 'password')}
               ></input>
               <div
                 className="absolute top-0 right-0 h-full flex items-center pr-4 cursor-pointer"
@@ -123,7 +149,7 @@ className='popup-class'
             className="w-full"
             href={"/"}
           >
-            <button onClick ={loginPostFn} className="bg-black text-white rounded-lg h-[50px] w-full">
+            <button onClick ={handleSubmit} className="bg-black text-white rounded-lg h-[50px] w-full">
               Submit
             </button>
           </Link>
@@ -139,7 +165,7 @@ className='popup-class'
       </div>
     </div>}
   {isSignUpModalOpen &&   <SignupField isSignInModalOpen={isSignInModalOpen} setSignInModalOpen ={setSignInModalOpen} isSignUpModalOpen={isSignUpModalOpen} setSignUpModalOpen={setSignUpModalOpen}  />}
-  {isSignInSuccessOpen &&<SignInSuccess />}
+  {isSignInSuccessOpen &&<SignInSuccess handleCancel={handleCancel} />}
       </Modal>
     </div>
   );

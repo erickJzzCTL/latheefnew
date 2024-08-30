@@ -6,8 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useStore from "@/store/store";
 import SignInPopup from "./popups/SignInPopup";
-import { useSetHomeData } from "@/hooks/useHomeData";
-import { AxiosResponse } from "axios";
+import userValidate from "@/utilities/userValidate";
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -301,7 +300,8 @@ const Header = () => {
                   {cartsvg}
                 </div>
               </Link>
-              <Link href={"/profile"}>
+              {userValidate() ? (
+                <Link href={"/profile"}>
                 <div
                   className={`w-[48px] h-[48px] flex items-center rounded-full  ${
                     pathname === "/profile" && "border-[1px] border-black"
@@ -310,15 +310,17 @@ const Header = () => {
                   {usersvg}
                 </div>
               </Link>
-
-              <div
-                onClick={() => setIsModalOpen(true)}
-                className={`w-[48px] h-[48px] flex items-center rounded-full  ${
-                  pathname === "/profile" && "border-[1px] border-black"
-                }`}
-              >
-                {usersvg}
-              </div>
+              ) : (<div onClick={() => setIsModalOpen(true)} 
+              className={`w-[48px] h-[48px] flex items-center rounded-full  ${
+                pathname === "/profile" && "border-[1px] border-black"
+              }`}
+            >
+              {usersvg}
+            </div> )}
+              
+              
+                
+              
             </div>
           </div>
           <div className="flex sm:hidden items-center">
