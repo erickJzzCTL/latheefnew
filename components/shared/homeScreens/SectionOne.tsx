@@ -8,7 +8,6 @@ import Image from "next/image";
 interface MainCategory {
   id: number;
   name: string;
-  date: string;
   image: string;
 }
 
