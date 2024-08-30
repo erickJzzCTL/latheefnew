@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import useStore from "@/store/store";
 import SignInPopup from "./popups/SignInPopup";
 import userValidate from "@/utilities/userValidate";
+import { useSetHomeData } from "@/hooks/useHomeData";
+import { AxiosResponse } from "axios";
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
