@@ -1,9 +1,13 @@
 import { NextRequest } from 'next/server';
 
-export const authToken = (request: NextRequest): boolean => {
-  // Use the cookies method on NextRequest to get the token
-  const token = request?.cookies.get('guestToken')?.value;
+export const authToken = (request?: NextRequest): boolean => {
+  // Server-side
+  if (request) {
+    const token = request.cookies.get('guestToken')?.value;
+    return token !== undefined && token.length > 0;
+  }
 
-  // Return true if the token is defined, otherwise false
-  return token !== undefined && token.length > 0;
+  // Client-side
+  const token = typeof window !== 'undefined' ? localStorage.getItem('guestToken') : null;
+  return token !== null && token.length > 0;
 };

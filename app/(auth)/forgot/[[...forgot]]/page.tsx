@@ -60,12 +60,12 @@ const ForgotPassword = ({ onContinue }: { onContinue: () => void }) => {
 
       <div className="mt-6 text-center">
         <span className="text-sm text-gray-600">Remember your account?</span>
-        <a
+        <Link
           href="#"
           className="text-sm text-black font-[500] hover:underline ml-2"
         >
           Login
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -142,12 +142,12 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
 
       <div className="mt-6 text-center">
         <span className="text-sm text-gray-600">Didn&apos;t get code? </span>
-        <a
+        <Link
           href="#"
           className="text-sm text-black font-[500] hover:underline ml-2"
         >
           Resend
-        </a>
+        </Link>
       </div>
     </div>
   );
