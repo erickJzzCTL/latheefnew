@@ -5,17 +5,15 @@ import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
-const poppins = Poppins(
-  { subsets: ["latin"],
-  weight:['400','500','600','700'],
-  variable:'--font-poppins'
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
 });
 
-
 export const metadata: Metadata = {
-  title: 'Latheef',
-  description: 'Latheef Ecommerce App',
+  title: "Latheef",
+  description: "Latheef Ecommerce App",
 };
 
 export default function RootLayout({
@@ -26,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-      <body className={poppins.className}>{children}</body>
+        <body className={poppins.className}>{children}</body>
       </Providers>
     </html>
   );

@@ -24,7 +24,7 @@ export default function RootLayout({
       
     }
     getHomeDetails()
-  },[])
+  },[setHomeData])
   
   // useEffect(()=>{getHomeDetails(),[]})
   return (

@@ -3,6 +3,7 @@
 import { useSetHomeData } from "@/hooks/useHomeData";
 import useStore from "@/store/store";
 import { AxiosResponse } from "axios";
+import Image from "next/image";
 
 interface HomeData {
   homepage_titles: HomeDataItem[];
@@ -31,10 +32,12 @@ export default function SubHeader() {
             className="flex md:flex-row flex-col items-center md:justify-start justify-center rounded-[20px] border-[1px] border-[#e6e6e8] px-[12px] py-[12px] md:gap-6 gap-2 w-full"
           >
             <div className="w-16 h-16 rounded-full overflow-hidden">
-              <img
+              <Image
                 src={item?.image}
                 alt={item?.title}
-                className="w-full h-full object-cover"
+                width={1000}
+                height={1000}
+                className="w-full h-full"
               />
             </div>
             <div className="flex items-center">
