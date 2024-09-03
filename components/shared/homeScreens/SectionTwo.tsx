@@ -1,16 +1,20 @@
-import React from 'react';
-import Image from 'next/image';
-const catArray = [
-  { name: 'Dress & T- Shirts', image: '/women2.jpeg' },
-  { name: 'Jewellery', image: '/f2.jpeg' },
-  { name: 'Accessories', image: '/f3.jpeg' },
-  { name: 'Shoes & Sandals', image: '/f4.jpeg' },
-  { name: 'Women Watches', image: '/f5.jpeg' },
-  { name: 'Designer Bag’s', image: '/f6.jpeg' },
-  { name: 'Men Watches', image: '/f7.jpeg' },
-];
+import React from "react";
+import { useSetHomeData } from "@/hooks/useHomeData";
+import { AxiosResponse } from "axios";
+import Link from "next/link";
+import Image from "next/image";
 
-const navsvg = (
+interface FeaturedCategory {
+  id: number;
+  category_name: string;
+  category_image: string;
+}
+
+interface HomeData {
+  featured_categories: FeaturedCategory[];
+}
+
+const NavSvg: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -24,41 +28,49 @@ const navsvg = (
     />
   </svg>
 );
-function SectionTwo() {
+
+const SectionTwo: React.FC = () => {
+  const { homeData } = useSetHomeData() as {
+    homeData: AxiosResponse<HomeData> | undefined;
+  };
+
+  const featuredCategories = homeData?.data?.featured_categories ?? [];
+
   return (
     <div className="bg-[#E6E6E8]">
       <div className="container mx-auto">
-        <div className="py-4 sm:py-10">
-          <h1 className="text-[40px] font-semibold text-center hidden sm:block">
+        <div className="py-5 sm:py-16">
+          <h1 className="md:text-[40px] text-[20px] font-semibold text-center">
             Featured Categories
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-10">
-            {catArray?.map((item, i) => {
-              return (
-                <div className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative">
-                  <Image
-                    src={item.image}
-                    className="h-full w-full object-cover"
-                    width={1000}
-                    height={1000}
-                    alt={`Lathz ${item.name}`}
-                  />
-                  <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4">
-                    <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[10px] sm:text-[14px] lg:text-[18px] flex justify-between items-center">
-                      <h1> {catArray[1].name}</h1>
-                      <div className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center">
-                        {navsvg}
-                      </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:mt-10 mt-6">
+            {featuredCategories.map((category, index) => (
+              <div
+                key={category.id}
+                className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative"
+              >
+                <Image
+                  src={category.category_image}
+                  className="h-full w-full object-cover"
+                  width={1000}
+                  height={1000}
+                  alt={`Lathz ${category.category_name}`}
+                />
+                <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4">
+                  <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[10px] sm:text-[14px] lg:text-[18px] flex justify-between items-center">
+                    <h1>{category.category_name}</h1>
+                    <div className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center">
+                      <NavSvg />
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SectionTwo;

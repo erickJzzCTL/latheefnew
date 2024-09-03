@@ -1,112 +1,47 @@
-import React from "react";
-import { text } from "stream/consumers";
+"use client";
+
+import { useSetHomeData } from "@/hooks/useHomeData";
+import useStore from "@/store/store";
+import { AxiosResponse } from "axios";
+
+interface HomeData {
+  homepage_titles: HomeDataItem[];
+}
+
+interface HomeDataItem {
+  id: string | number;
+  title: string;
+  image: string;
+}
 
 export default function SubHeader() {
-  const data = [
-    {
-      text: "100% Quality Products",
-      svg: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="64"
-          height="64"
-          fill="none"
-        >
-          <rect width="64" height="64" rx="32" fill="#000" />
-          <mask
-            id="a"
-            mask-type="alpha"
-            maskUnits="userSpaceOnUse"
-            x="16"
-            y="16"
-            width="32"
-            height="32"
-          >
-            <path fill="#D9D9D9" d="M16 16h32v32H16z" />
-          </mask>
-          <g mask="url(#a)">
-            <path
-              d="m24 30.6-1.333.733a1.306 1.306 0 0 1-1 .134 1.225 1.225 0 0 1-.8-.6L18.2 26.2a1.306 1.306 0 0 1-.133-1c.089-.356.289-.622.6-.8l7.667-4.4h2.333c.2 0 .361.061.483.183a.653.653 0 0 1 .184.484v.666c0 .734.26 1.361.783 1.884.522.522 1.15.783 1.883.783.734 0 1.361-.261 1.884-.783.522-.523.783-1.15.783-1.884v-.666c0-.2.061-.361.183-.484a.654.654 0 0 1 .484-.183h2.333l7.667 4.4c.31.178.51.444.6.8.089.356.044.689-.134 1l-2.666 4.667a1.163 1.163 0 0 1-.784.583 1.43 1.43 0 0 1-1.016-.15L40 30.633v12.034c0 .377-.127.694-.383.95a1.29 1.29 0 0 1-.95.383H25.334a1.29 1.29 0 0 1-.95-.383 1.29 1.29 0 0 1-.384-.95V30.6Z"
-              fill="#fff"
-            />
-          </g>
-        </svg>
-      ),
-    },
-    {
-      text: "Safe Packaging",
-      svg: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="65"
-          height="64"
-          fill="none"
-        >
-          <rect x=".333" width="64" height="64" rx="32" fill="#000" />
-          <mask
-            id="a"
-            mask-type="alpha"
-            maskUnits="userSpaceOnUse"
-            x="16"
-            y="15"
-            width="33"
-            height="33"
-          >
-            <path fill="#D9D9D9" d="M16.334 15.5h32v32h-32z" />
-          </mask>
-          <g mask="url(#a)">
-            <path
-              d="M31.333 43.89V32.074L21 26.1v10.456a2.362 2.362 0 0 0 1.205 2.082l9.128 5.252Zm2 0 9.128-5.252a2.372 2.372 0 0 0 1.206-2.082V26.1l-10.334 5.974V43.89Zm5.095-17.064 4.151-2.403-9.04-5.197a2.374 2.374 0 0 0-2.41 0l-2.929 1.68 10.228 5.92Zm-6.095 3.525 4.095-2.356-10.233-5.928-4.115 2.364 10.253 5.92Z"
-              fill="#fff"
-            />
-          </g>
-        </svg>
-      ),
-    },
-    {
-      text: "World Wide Shipping",
-      svg: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="65"
-          height="64"
-          fill="none"
-        >
-          <rect x=".667" width="64" height="64" rx="32" fill="#000" />
-          <mask
-            id="a"
-            mask-type="alpha"
-            maskUnits="userSpaceOnUse"
-            x="16"
-            y="16"
-            width="33"
-            height="32"
-          >
-            <path fill="#D9D9D9" d="M16.666 16h32v32h-32z" />
-          </mask>
-          <g mask="url(#a)">
-            <path
-              d="M32.666 45.333a12.9 12.9 0 0 1-5.166-1.05 13.524 13.524 0 0 1-4.25-2.866 13.525 13.525 0 0 1-2.867-4.25A12.902 12.902 0 0 1 19.333 32c0-1.844.35-3.572 1.05-5.183a13.578 13.578 0 0 1 2.867-4.234 13.524 13.524 0 0 1 4.25-2.866 12.9 12.9 0 0 1 5.166-1.05c1.845 0 3.573.35 5.184 1.05 1.61.7 3.022 1.655 4.233 2.866a13.578 13.578 0 0 1 2.867 4.234C45.65 28.427 46 30.156 46 32c0 1.822-.35 3.544-1.05 5.167a13.525 13.525 0 0 1-2.867 4.25 13.577 13.577 0 0 1-4.233 2.866c-1.611.7-3.34 1.05-5.184 1.05Zm0-2.733c.578-.8 1.078-1.633 1.5-2.5a15.78 15.78 0 0 0 1.034-2.767h-5.067c.267.978.611 1.9 1.033 2.767.423.867.923 1.7 1.5 2.5Zm-3.466-.533c-.4-.734-.75-1.495-1.05-2.284-.3-.789-.55-1.605-.75-2.45h-3.934a11.065 11.065 0 0 0 2.417 2.9 9.593 9.593 0 0 0 3.317 1.834Zm6.933 0a9.593 9.593 0 0 0 3.317-1.834 11.064 11.064 0 0 0 2.416-2.9h-3.933c-.2.845-.45 1.661-.75 2.45-.3.79-.65 1.55-1.05 2.284Zm-13.8-7.4h4.533a17.627 17.627 0 0 1-.2-2.667 17.627 17.627 0 0 1 .2-2.667h-4.533A10.622 10.622 0 0 0 22 32a10.622 10.622 0 0 0 .333 2.667Zm7.2 0H35.8A17.627 17.627 0 0 0 36 32a17.627 17.627 0 0 0-.2-2.667h-6.267a17.627 17.627 0 0 0-.2 2.667 17.627 17.627 0 0 0 .2 2.667Zm8.933 0H43A10.622 10.622 0 0 0 43.333 32 10.622 10.622 0 0 0 43 29.333h-4.534a17.576 17.576 0 0 1 .2 2.667 17.576 17.576 0 0 1-.2 2.667Zm-.533-8h3.933a11.064 11.064 0 0 0-2.416-2.9 9.593 9.593 0 0 0-3.317-1.834c.4.734.75 1.495 1.05 2.284.3.789.55 1.605.75 2.45Zm-7.8 0H35.2a15.78 15.78 0 0 0-1.034-2.767c-.422-.867-.922-1.7-1.5-2.5a16.94 16.94 0 0 0-1.5 2.5 15.787 15.787 0 0 0-1.033 2.767Zm-6.667 0H27.4c.2-.845.45-1.661.75-2.45.3-.79.65-1.55 1.05-2.284a9.593 9.593 0 0 0-3.317 1.834 11.065 11.065 0 0 0-2.417 2.9Z"
-              fill="#fff"
-            />
-          </g>
-        </svg>
-      ),
-    },
-  ];
+  const { homeData } = useSetHomeData() as {
+    homeData: AxiosResponse<HomeData> | undefined;
+  };
+
+  const subheaderData = homeData?.data?.homepage_titles ?? [];
+  console.log(subheaderData);
 
   return (
     <div className="container mx-auto">
       <div className="flex md:gap-6 gap-2 justify-between md:mt-10 mt-6">
-        {data.map((item, index) => (
+        {subheaderData?.map((item: HomeDataItem) => (
           <div
-            key={index}
-            className="flex md:flex-row flex-col items-center md:justify-start justify-center rounded-[20px] border-[1px] border-[#E6E6E8] px-[12px] py-[12px] md:gap-6 gap-2 w-full"
+            key={item?.id}
+            className="flex md:flex-row flex-col items-center md:justify-start justify-center rounded-[20px] border-[1px] border-[#e6e6e8] px-[12px] py-[12px] md:gap-6 gap-2 w-full"
           >
-            <div>{item.svg}</div>
-            <p className="font-[600] md:text-[24px] text-[10px] md:text-start text-center">
-              {item.text}
-            </p>
+            <div className="w-16 h-16 rounded-full overflow-hidden">
+              <img
+                src={item?.image}
+                alt={item?.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex items-center">
+              <p className="font-[600] md:text-[20px] text-[10px] md:text-start text-center">
+                {item?.title}
+              </p>
+            </div>
           </div>
         ))}
       </div>
