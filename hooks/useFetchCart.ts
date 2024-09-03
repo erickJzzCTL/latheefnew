@@ -9,6 +9,8 @@ interface Product {
   is_active: boolean;
   maincategory: number;
   productcategory: number;
+  in_cart: boolean;
+  in_favourite: boolean;
   // Add any other relevant product fields
 }
 

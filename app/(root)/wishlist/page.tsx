@@ -1,14 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { useFetchWishlist } from '@/hooks/useFetchWishlist';
 import { useAddToCart } from '@/hooks/useAddToCart';
 import { useAddToWishlist } from '@/hooks/useAddToWishlist';
 
+// Define types
+interface Product {
+  id: number;
+  image: string;
+  in_cart: boolean;
+}
+
+interface FavouriteItem {
+  id: number;
+  product: Product;
+}
+
 export default function Wishlist() {
-  const { data: wishItems = [], isLoading, isError } = useFetchWishlist(); // Provide a default empty array
+  const { data: fetchedWishItems, isLoading, isError } = useFetchWishlist();
+  const [wishItems, setWishItems] = useState<FavouriteItem[]>([]);
+
+  useEffect(() => {
+    if (fetchedWishItems) {
+      setWishItems(fetchedWishItems);
+    }
+  }, [fetchedWishItems]);
 
   const addToCartMutation = useAddToCart();
 
@@ -18,6 +37,13 @@ export default function Wishlist() {
       {
         onSuccess: (data) => {
           alert(data.message);
+          setWishItems(prevItems =>
+            prevItems.map(item =>
+              item.product.id === productId
+                ? { ...item, product: { ...item.product, in_cart: true } }
+                : item
+            )
+          );
         },
       }
     );
@@ -28,13 +54,12 @@ export default function Wishlist() {
   const handleAddToWishlist = (productId: number) => {
     addToWishlistMutation.mutate(productId, {
       onSuccess: (data) => {
-        // Show a success message to the user
         alert(data.message);
+        setWishItems(prevItems => prevItems.filter(item => item.product.id !== productId));
       },
     });
   };
 
- 
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -73,7 +98,6 @@ export default function Wishlist() {
               className="flex flex-col md:grid md:grid-cols-3 gap-4 p-4 border-b border-gray-200 items-center"
             >
               <div className="flex justify-between md:justify-center items-center w-full md:w-auto">
-                {/* <p className="font-semibold md:font-normal">Sl.no</p> */}
                 <p>{index + 1}</p>
               </div>
               <div className="flex justify-center items-center w-full">
@@ -88,11 +112,15 @@ export default function Wishlist() {
                 </div>
               </div>
               <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-2 md:space-y-0 md:space-x-2">
+              {item.product.in_cart ? (
+                  null
+                ) : (
                 <button 
                 onClick={() => handleAddToCart(item.product.id)}
                 className="bg-black text-white px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto">
                   Add to Cart
                 </button>
+                )}
                 <button
                 onClick={() => handleAddToWishlist(item.product.id)}
                 className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto">

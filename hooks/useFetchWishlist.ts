@@ -9,6 +9,8 @@ interface Product {
   is_active: boolean;
   maincategory: number;
   productcategory: number;
+  in_cart: boolean;
+  in_favourite: boolean;
 }
 
 interface FavouriteItem {
@@ -16,6 +18,7 @@ interface FavouriteItem {
   product: Product;
   date: string;
   user: number;
+
 }
 
 interface WishlistResponse {
