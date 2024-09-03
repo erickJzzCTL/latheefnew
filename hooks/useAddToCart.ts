@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "@/utilities/customaxios";
-import { getCookie } from "cookies-next";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from '@/utilities/customaxios';
+import { getCookie } from 'cookies-next';
 
 interface AddToCartResponse {
   message: string;
@@ -20,8 +20,8 @@ const addToCart = async ({ product_id, quantity }: AddToCartParams) => {
     { product_id, quantity },
     {
       headers: {
-        Authorization: `Bearer ${userToken}`
-      }
+        Authorization: `Bearer ${userToken}`,
+      },
     }
   );
   return response.data;
@@ -34,7 +34,7 @@ export const useAddToCart = () => {
     mutationFn: addToCart,
     onSuccess: () => {
       // Invalidate and refetch the cart query
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 };
