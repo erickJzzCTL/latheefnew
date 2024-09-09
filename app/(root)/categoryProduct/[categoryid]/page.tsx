@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useSubCategories } from "@/hooks/useSubCategoryData";
-import useStore from "@/store/store";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useSubCategories } from '@/hooks/useSubCategoryData';
+import useStore from '@/store/store';
 
 type ParamsType = { params: { categoryid: string } };
 
@@ -31,8 +31,12 @@ const CategoryProduct: React.FC<ParamsType> = ({ params }) => {
   if (error) return <div>Error loading data</div>;
 
   const subcategories = data?.data.subcategories || [];
-  const product_collection = data?.data.maincategory_name || "Collections";
+  const product_collection = data?.data.maincategory_name || 'Collections';
 
+  const handleSubcategoryClick = (id: string) => {
+    setSelectedSubcategory(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <div className="bg-[#F0F0F0]">
       <div className="container mx-auto">
@@ -41,7 +45,7 @@ const CategoryProduct: React.FC<ParamsType> = ({ params }) => {
         </h1>
         <div className="pt-4 pb-14">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-10">
-            {subcategories.map((item) => (
+            {subcategories.map(item => (
               <div
                 key={item.id}
                 className="rounded-lg overflow-hidden h-[200px] md:h-[400px] relative"
@@ -59,7 +63,7 @@ const CategoryProduct: React.FC<ParamsType> = ({ params }) => {
                     <Link
                       href={`/categoryFilter/${item.id}`}
                       className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center"
-                      onClick={() => setSelectedSubcategory(item.id.toString())}
+                      onClick={() => handleSubcategoryClick(item.id.toString())}
                     >
                       {navsvg}
                     </Link>

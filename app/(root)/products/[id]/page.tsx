@@ -1,13 +1,83 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import Image from "next/image";
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
 
-import img1 from "../../../../assets/products/img1.png";
-import { useProduct } from "@/hooks/useProduct";
-import { useAddToWishlist } from "@/hooks/useAddToWishlist";
-import { useAddToCart } from "@/hooks/useAddToCart";
+import img1 from '../../../../assets/products/img1.png';
+import { useProduct } from '@/hooks/useProduct';
+import { useAddToWishlist } from '@/hooks/useAddToWishlist';
+import { useAddToCart } from '@/hooks/useAddToCart';
+import useStore from '@/store/store';
+import userValidate from '@/utilities/userValidate';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+const wishSvg = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="54"
+    height="54"
+    viewBox="0 0 81 81"
+    className="group"
+  >
+    <circle
+      cx="40.5"
+      cy="40.3335"
+      r="40"
+      className="fill-[#5B5B5B] group-hover:fill-white transition-colors duration-300"
+    />
+    <mask
+      id="mask0_296_115"
+      style={{ maskType: 'alpha' }}
+      maskUnits="userSpaceOnUse"
+      x="20"
+      y="20"
+      width="41"
+      height="41"
+    >
+      <rect x="20.5" y="20.3335" width="40" height="40" fill="white" />
+    </mask>
+    <g mask="url(#mask0_296_115)">
+      <path
+        d="M40.5003 54.2114L38.6607 52.5577C35.898 50.0513 33.6132 47.8975 31.8066 46.0964C29.9999 44.295 28.5682 42.6918 27.5116 41.2868C26.4549 39.8821 25.7167 38.6006 25.297 37.4422C24.877 36.2842 24.667 35.1091 24.667 33.9168C24.667 31.5516 25.4645 29.5713 27.0595 27.976C28.6548 26.381 30.635 25.5835 33.0003 25.5835C34.4553 25.5835 35.8303 25.9238 37.1253 26.6043C38.4203 27.2849 39.5453 28.2609 40.5003 29.5322C41.4553 28.2609 42.5803 27.2849 43.8753 26.6043C45.1703 25.9238 46.5453 25.5835 48.0003 25.5835C50.3656 25.5835 52.3459 26.381 53.9412 27.976C55.5362 29.5713 56.3337 31.5516 56.3337 33.9168C56.3337 35.1091 56.1237 36.2842 55.7037 37.4422C55.2839 38.6006 54.5457 39.8821 53.4891 41.2868C52.4324 42.6918 51.0034 44.295 49.202 46.0964C47.4009 47.8975 45.1135 50.0513 42.3399 52.5577L40.5003 54.2114ZM40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
+        className="fill-white group-hover:fill-black transition-colors duration-300"
+      />
+    </g>
+  </svg>
+);
+const wishSvgActive = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="54"
+    height="54"
+    viewBox="0 0 81 81"
+    className="group"
+  >
+    <circle
+      cx="40.5"
+      cy="40.3335"
+      r="40"
+      className="fill-white group-hover:fill-[#5B5B5B] transition-colors duration-300"
+    />
+    <mask
+      id="mask0_296_115"
+      style={{ maskType: 'alpha' }}
+      maskUnits="userSpaceOnUse"
+      x="20"
+      y="20"
+      width="41"
+      height="41"
+    >
+      <rect x="20.5" y="20.3335" width="40" height="40" fill="white" />
+    </mask>
+    <g mask="url(#mask0_296_115)">
+      <path
+        d="M40.5003 54.2114L38.6607 52.5577C35.898 50.0513 33.6132 47.8975 31.8066 46.0964C29.9999 44.295 28.5682 42.6918 27.5116 41.2868C26.4549 39.8821 25.7167 38.6006 25.297 37.4422C24.877 36.2842 24.667 35.1091 24.667 33.9168C24.667 31.5516 25.4645 29.5713 27.0595 27.976C28.6548 26.381 30.635 25.5835 33.0003 25.5835C34.4553 25.5835 35.8303 25.9238 37.1253 26.6043C38.4203 27.2849 39.5453 28.2609 40.5003 29.5322C41.4553 28.2609 42.5803 27.2849 43.8753 26.6043C45.1703 25.9238 46.5453 25.5835 48.0003 25.5835C50.3656 25.5835 52.3459 26.381 53.9412 27.976C55.5362 29.5713 56.3337 31.5516 56.3337 33.9168C56.3337 35.1091 56.1237 36.2842 55.7037 37.4422C55.2839 38.6006 54.5457 39.8821 53.4891 41.2868C52.4324 42.6918 51.0034 44.295 49.202 46.0964C47.4009 47.8975 45.1135 50.0513 42.3399 52.5577L40.5003 54.2114ZM40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
+        className="fill-black group-hover:fill-white transition-colors duration-300"
+      />
+    </g>
+  </svg>
+);
 export default function ProductPage() {
   const params = useParams();
   const productId = params.id as string; // Type-cast to string, since useParams returns string | undefined
@@ -17,21 +87,33 @@ export default function ProductPage() {
   const addToWishlistMutation = useAddToWishlist();
   const handleAddToWishlist = (productId: number) => {
     addToWishlistMutation.mutate(productId, {
-      onSuccess: (data) => {
+      onSuccess: data => {
         // Show a success message to the user
-        alert(data.message);
+        // alert(data.message);
+        toast.success(data.message);
       },
     });
+    // window.location.reload();
   };
 
   const addToCartMutation = useAddToCart();
+
+  const [isModalOpen, setIsModalOpen] = useStore(
+    state =>
+      [state.isModalOpen, state.setIsModalOpen] as [
+        boolean,
+        (open: boolean) => void
+      ]
+  );
 
   const handleAddToCart = (productId: number) => {
     addToCartMutation.mutate(
       { product_id: productId, quantity: 1 },
       {
-        onSuccess: (data) => {
-          alert(data.message);
+        onSuccess: data => {
+          // Show a success message to the user
+          // alert(data.message);
+          toast.success(data.message);
         },
       }
     );
@@ -39,20 +121,20 @@ export default function ProductPage() {
 
   const handleDownloadImage = (imageUrl: string) => {
     fetch(imageUrl)
-      .then((res) => res.blob())
-      .then((blob) => {
+      .then(res => res.blob())
+      .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", `product-${productId}.png`);
+        link.setAttribute('download', `product-${productId}.png`);
         document.body.appendChild(link);
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
       })
-      .catch((err) => {
-        console.error("Error downloading image:", err);
-        alert("Error downloading image. Please try again later.");
+      .catch(err => {
+        console.error('Error downloading image:', err);
+        alert('Error downloading image. Please try again later.');
       });
   };
 
@@ -65,11 +147,11 @@ export default function ProductPage() {
       // Fallback to clipboard copy
       navigator.clipboard.writeText(window.location.href).then(
         () => {
-          alert("Product link copied to clipboard!");
+          alert('Product link copied to clipboard!');
         },
-        (err) => {
-          console.error("Failed to copy product link to clipboard:", err);
-          alert("Failed to copy product link to clipboard.");
+        err => {
+          console.error('Failed to copy product link to clipboard:', err);
+          alert('Failed to copy product link to clipboard.');
         }
       );
     }
@@ -86,6 +168,9 @@ export default function ProductPage() {
   if (!data) {
     return <div>No product found.</div>;
   }
+  console.log(data);
+
+  console.log(data.in_favourite);
 
   return (
     <div className="container mx-auto">
@@ -120,7 +205,7 @@ export default function ProductPage() {
               />
               <mask
                 id="mask0_296_110"
-                style={{ maskType: "alpha" }}
+                style={{ maskType: 'alpha' }}
                 maskUnits="userSpaceOnUse"
                 x="20"
                 y="20"
@@ -140,51 +225,21 @@ export default function ProductPage() {
 
           {/* Wish */}
           <div
-            onClick={() => handleAddToWishlist(data.id)}
+            onClick={() => {
+              userValidate()
+                ? handleAddToWishlist(data.id)
+                : setIsModalOpen(true);
+            }}
             className="w-14 h-14 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="54"
-              height="54"
-              viewBox="0 0 81 81"
-              className="group"
-            >
-              <circle
-                cx="40.5"
-                cy="40.3335"
-                r="40"
-                className="fill-[#5B5B5B] group-hover:fill-white transition-colors duration-300"
-              />
-              <mask
-                id="mask0_296_115"
-                style={{ maskType: "alpha" }}
-                maskUnits="userSpaceOnUse"
-                x="20"
-                y="20"
-                width="41"
-                height="41"
-              >
-                <rect
-                  x="20.5"
-                  y="20.3335"
-                  width="40"
-                  height="40"
-                  fill="white"
-                />
-              </mask>
-              <g mask="url(#mask0_296_115)">
-                <path
-                  d="M40.5003 54.2114L38.6607 52.5577C35.898 50.0513 33.6132 47.8975 31.8066 46.0964C29.9999 44.295 28.5682 42.6918 27.5116 41.2868C26.4549 39.8821 25.7167 38.6006 25.297 37.4422C24.877 36.2842 24.667 35.1091 24.667 33.9168C24.667 31.5516 25.4645 29.5713 27.0595 27.976C28.6548 26.381 30.635 25.5835 33.0003 25.5835C34.4553 25.5835 35.8303 25.9238 37.1253 26.6043C38.4203 27.2849 39.5453 28.2609 40.5003 29.5322C41.4553 28.2609 42.5803 27.2849 43.8753 26.6043C45.1703 25.9238 46.5453 25.5835 48.0003 25.5835C50.3656 25.5835 52.3459 26.381 53.9412 27.976C55.5362 29.5713 56.3337 31.5516 56.3337 33.9168C56.3337 35.1091 56.1237 36.2842 55.7037 37.4422C55.2839 38.6006 54.5457 39.8821 53.4891 41.2868C52.4324 42.6918 51.0034 44.295 49.202 46.0964C47.4009 47.8975 45.1135 50.0513 42.3399 52.5577L40.5003 54.2114ZM40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
-                  className="fill-white group-hover:fill-black transition-colors duration-300"
-                />
-              </g>
-            </svg>
+            {data.in_favourite === true ? wishSvg : wishSvgActive}
           </div>
 
           {/* Cart */}
           <div
-            onClick={() => handleAddToCart(data.id)}
+            onClick={() => {
+              userValidate() ? handleAddToCart(data.id) : setIsModalOpen(true);
+            }}
             className="w-14 h-14 cursor-pointer"
           >
             <svg
@@ -205,7 +260,7 @@ export default function ProductPage() {
               {/* Mask and Path */}
               <mask
                 id="mask0_296_120"
-                style={{ maskType: "alpha" }}
+                style={{ maskType: 'alpha' }}
                 maskUnits="userSpaceOnUse"
                 x="20"
                 y="21"
@@ -246,7 +301,7 @@ export default function ProductPage() {
               />
               <mask
                 id="mask0_296_125"
-                style={{ maskType: "alpha" }}
+                style={{ maskType: 'alpha' }}
                 maskUnits="userSpaceOnUse"
                 x="20"
                 y="20"

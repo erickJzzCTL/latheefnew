@@ -41,7 +41,7 @@ export default function SubHeader() {
               />
             </div>
             <div className="flex items-center">
-              <p className="font-[600] md:text-[24px] text-[10px] md:text-start text-center">
+              <p className="font-[600] md:text-[20px] text-[10px] md:text-start text-center">
                 {item?.title}
               </p>
             </div>

@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "@/utilities/customaxios";
-import { getCookie } from "cookies-next";
+import { useQuery } from '@tanstack/react-query';
+import axios from '@/utilities/customaxios';
+import { getCookie } from 'cookies-next';
 
 interface Product {
   id: number;
@@ -30,15 +30,15 @@ const fetchCart = async () => {
   const userToken = getCookie('userToken');
   const response = await axios.get<CartResponse>('/api/get-cart-items', {
     headers: {
-      Authorization: `Bearer ${userToken}`
-    }
+      Authorization: `Bearer ${userToken}`,
+    },
   });
   return response.data.cart_items;
 };
 
 export const useFetchCart = () => {
   return useQuery({
-    queryKey: ["cart"],
+    queryKey: ['cart'],
     queryFn: fetchCart,
   });
 };

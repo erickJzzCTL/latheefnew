@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "@/utilities/customaxios";
+import { useQuery } from '@tanstack/react-query';
+import axios from '@/utilities/customaxios';
 
 interface Product {
   id: number;
@@ -8,20 +8,25 @@ interface Product {
   is_active: boolean;
   maincategory: number;
   productcategory: number;
+  in_cart: boolean;
+  in_favourite: boolean;
 }
 
 interface ProductResponse {
-  product: Product;  // Adjusted to match the API response
+  product: Product; // Matches the API response format
 }
 
-const fetchProduct = (productId: string) => {
-  return axios.get<ProductResponse>(`/api/get-products/${productId}`)
-    .then(response => response.data.product);  // Access the 'product' object
+const fetchProduct = async (productId: string): Promise<Product> => {
+  const { data } = await axios.get<ProductResponse>(
+    `/api/get-products/${productId}`
+  );
+  return data.product; // Return the 'product' object
 };
 
 export const useProduct = (productId: string) => {
   return useQuery({
-    queryKey: ["products", productId],
+    queryKey: ['product', productId], // Singular 'product' since it's fetching one product
     queryFn: () => fetchProduct(productId),
+    enabled: !!productId, // Prevent fetching if productId is not available
   });
 };

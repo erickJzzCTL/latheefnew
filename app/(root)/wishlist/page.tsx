@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 import { useFetchWishlist } from '@/hooks/useFetchWishlist';
 import { useAddToCart } from '@/hooks/useAddToCart';
 import { useAddToWishlist } from '@/hooks/useAddToWishlist';
@@ -35,7 +35,7 @@ export default function Wishlist() {
     addToCartMutation.mutate(
       { product_id: productId, quantity: 1 },
       {
-        onSuccess: (data) => {
+        onSuccess: data => {
           alert(data.message);
           setWishItems(prevItems =>
             prevItems.map(item =>
@@ -53,9 +53,11 @@ export default function Wishlist() {
 
   const handleAddToWishlist = (productId: number) => {
     addToWishlistMutation.mutate(productId, {
-      onSuccess: (data) => {
+      onSuccess: data => {
         alert(data.message);
-        setWishItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+        setWishItems(prevItems =>
+          prevItems.filter(item => item.product.id !== productId)
+        );
       },
     });
   };
@@ -71,11 +73,13 @@ export default function Wishlist() {
   return (
     <div className="bg-[#f0f0f0] md:py-0 py-10">
       <div className="container mx-auto px-4 pt-8 pb-16">
-        <h1 className="text-2xl md:text-[32px] font-[600] mb-2">Wishlist ({wishItems.length})</h1>
+        <h1 className="text-2xl md:text-[32px] font-[600] mb-2">
+          Wishlist ({wishItems.length})
+        </h1>
         <p className="text-gray-600 mb-6 md:mb-10 text-sm md:text-[14px]">
           <Link href="/" className="hover:underline">
             Home
-          </Link>{" "}
+          </Link>{' '}
           / Wishlist
         </p>
 
@@ -112,25 +116,27 @@ export default function Wishlist() {
                 </div>
               </div>
               <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-2 md:space-y-0 md:space-x-2">
-              {item.product.in_cart ? (
-                  null
-                ) : (
-                <button 
-                onClick={() => handleAddToCart(item.product.id)}
-                className="bg-black text-white px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto">
-                  Add to Cart
-                </button>
+                {item.product.in_cart ? null : (
+                  <button
+                    onClick={() => handleAddToCart(item.product.id)}
+                    className="bg-black text-white px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
+                  >
+                    Add to Cart
+                  </button>
                 )}
                 <button
-                onClick={() => handleAddToWishlist(item.product.id)}
-                className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto">
+                  onClick={() => handleAddToWishlist(item.product.id)}
+                  className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
+                >
                   Remove
                 </button>
               </div>
             </div>
           ))}
         </div>
-        <button className="bg-black text-white px-4 py-4 rounded-[20px] text-sm w-full mt-6 md:mt-10">Enquire Now</button>
+        <button className="bg-black text-white px-4 py-4 rounded-[20px] text-sm w-full mt-6 md:mt-10">
+          Enquire Now
+        </button>
       </div>
     </div>
   );

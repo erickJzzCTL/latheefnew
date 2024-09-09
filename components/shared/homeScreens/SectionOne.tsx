@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import { useSetHomeData } from "@/hooks/useHomeData";
-import { AxiosResponse } from "axios";
-import Link from "next/link";
-import Image from "next/image";
+import { useSetHomeData } from '@/hooks/useHomeData';
+import { AxiosResponse } from 'axios';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface MainCategory {
   id: number;
@@ -31,14 +31,20 @@ const NavSvg: React.FC = () => (
   </svg>
 );
 
-const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({ category, index }) => (
+const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({
+  category,
+  index,
+}) => (
   <Link
     href={`/categoryProduct/${category.id}`}
-    className={`relative ${index === 2 ? "col-span-2 md:col-span-1" : ""}`}
+    className={`relative ${index === 2 ? 'col-span-2 md:col-span-1' : ''}`}
+    onClick={() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }}
   >
     <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
       <Image
-        src={category?.image || "/"}
+        src={category?.image || '/'}
         alt={`${category.name}`}
         width={1000}
         height={1000}
@@ -71,7 +77,9 @@ const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({ cat
         </div>
         <div className="absolute right-0 w-1/2 px-2 sm:px-4 py-2 sm:my-4 flex sm:hidden top-0 h-full items-center">
           <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[12px] sm:text-[14px] lg:text-[18px] w-full">
-            <h1 className="text-[16px] sm:text-2xl text-center">{category.name}</h1>
+            <h1 className="text-[16px] sm:text-2xl text-center">
+              {category.name}
+            </h1>
             <div className="flex gap-2 mt-2 flex-col">
               <button className="text-[10px] px-[32px] py-[12px] bg-black rounded-lg text-white">
                 Boys

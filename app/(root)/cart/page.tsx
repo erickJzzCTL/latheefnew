@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useFetchCart } from "@/hooks/useFetchCart";
-import { useAddToCart } from "@/hooks/useAddToCart";
-import { useAddToWishlist } from "@/hooks/useAddToWishlist";
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useFetchCart } from '@/hooks/useFetchCart';
+import { useAddToCart } from '@/hooks/useAddToCart';
+import { useAddToWishlist } from '@/hooks/useAddToWishlist';
 
 // Define types
 interface Product {
@@ -33,7 +33,7 @@ export default function Cart() {
 
   const handleAddToWishlist = (productId: number) => {
     addToWishlistMutation.mutate(productId, {
-      onSuccess: (data) => {
+      onSuccess: data => {
         alert(data.message);
         setCartItems(prevItems =>
           prevItems.map(item =>
@@ -52,9 +52,11 @@ export default function Cart() {
     addToCartMutation.mutate(
       { product_id: productId, quantity: 0 },
       {
-        onSuccess: (data) => {
+        onSuccess: data => {
           alert(data.message);
-          setCartItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+          setCartItems(prevItems =>
+            prevItems.filter(item => item.product.id !== productId)
+          );
         },
       }
     );
@@ -77,7 +79,7 @@ export default function Cart() {
         <p className="text-gray-600 mb-10 text-sm md:text-[14px]">
           <Link href="/" className="hover:underline">
             Home
-          </Link>{" "}
+          </Link>{' '}
           / Cart
         </p>
 
@@ -115,9 +117,7 @@ export default function Cart() {
                 </div>
               </div>
               <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-2 md:space-y-0 md:space-x-2">
-                {item.product.in_favourite ? (
-                  null
-                ) : (
+                {item.product.in_favourite ? null : (
                   <button
                     onClick={() => handleAddToWishlist(item.product.id)}
                     className="bg-black text-white px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
@@ -125,7 +125,7 @@ export default function Cart() {
                     Add to Favourites
                   </button>
                 )}
-                
+
                 <button
                   onClick={() => handleRemoveFromCart(item.product.id)}
                   className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
