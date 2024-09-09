@@ -76,14 +76,30 @@ export default function SignupField({
   const validateFields = (): boolean => {
     const newErrors: ErrorMessages = {};
 
+    // Name validation
     if (!postData.name) newErrors.name = 'Name is required';
-    if (!postData.email) newErrors.email = 'Email is required';
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex pattern
+    if (!postData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(postData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Phone number validation
     if (!postData.mobile_number) {
       newErrors.mobile_number = 'Phone number is required';
     } else if (postData.mobile_number.length !== 10) {
       newErrors.mobile_number = 'Phone number must be exactly 10 digits';
+    } else if (!/^\d+$/.test(postData.mobile_number)) {
+      newErrors.mobile_number = 'Phone number must contain only digits';
     }
+
+    // Password validation
     if (!postData.password) newErrors.password = 'Password is required';
+
+    // Confirm password validation
     if (!postData.confirmpassword)
       newErrors.confirmpassword = 'Confirm Password is required';
 
@@ -116,8 +132,6 @@ export default function SignupField({
         });
       }
     } catch (error: any) {
-      // Specify type any to access error.message
-      // Ensure error.message is handled properly
       const errorMessage =
         error?.response?.data?.message || 'Registration failed'; // Default message if not available
       toast.error(errorMessage);
@@ -165,6 +179,7 @@ export default function SignupField({
                 Email
               </label>
               <input
+                type="email"
                 className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4"
                 placeholder="Email"
                 onChange={e => postDataFn(e, 'email')}
@@ -180,6 +195,7 @@ export default function SignupField({
               <input
                 className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4"
                 placeholder="Phone Number"
+                value={postData.mobile_number}
                 onChange={e => postDataFn(e, 'mobile_number')}
               />
               {errors.mobile_number && (
@@ -225,16 +241,8 @@ export default function SignupField({
                 Confirm Password
               </label>
               <div className="relative">
-                <style>
-                  {`
-                  input::-ms-reveal,
-                  input::-ms-clear {
-                    display: none;
-                  }
-                `}
-                </style>
                 <input
-                  className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4 no-eye-icon"
+                  className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4"
                   placeholder="Confirm Password"
                   type={showPassword2 ? 'text' : 'password'}
                   onChange={e => postDataFn(e, 'confirmpassword')}
@@ -254,12 +262,22 @@ export default function SignupField({
             </div>
           </div>
           <button
+            className="bg-black text-white w-full text-lg rounded-lg h-[50px] hover:bg-[#000000de]"
             onClick={submitFn}
-            disabled={isSubmitting} // Disable button when submitting
-            className="text-white w-full h-[50px] rounded-xl mt-4 mb-4 bg-black"
+            disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Signup'}
+            {isSubmitting ? 'Submitting...' : 'Sign Up'}
           </button>
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <p>Already have an account?</p>
+            <Link
+              href="#"
+              onClick={LoginFn}
+              className="text-[#FF6551] hover:underline"
+            >
+              Login
+            </Link>
+          </div>
         </div>
       </div>
     </div>

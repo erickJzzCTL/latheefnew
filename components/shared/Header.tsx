@@ -261,7 +261,7 @@ const Header = () => {
   const whatsappNumber = homeData?.data.whatsapp_number;
 
   return (
-    <div className="header py-[6px] sm:py-[16px] border-b-[1px] border-b-[#E6E6E8]">
+    <div className="header py-[6px] sm:py-[16px] border-b-[1px] border-b-[#E6E6E8] sticky top-0 z-100 bg-white">
       <div className="container mx-auto">
         <SignInPopup />
         <div className="flex justify-between">

@@ -105,7 +105,8 @@ export default function SignInPopup() {
         });
         // Handle successful login
       } else {
-        toast.error(`Login failed: ${result.message}`);
+        toast.error('Login failed');
+        console.log(result.message);
       }
     } catch (err: any) {
       toast.error('Invalid Credentials');
