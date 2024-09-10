@@ -276,14 +276,17 @@ const Header = () => {
           </Link>
 
           <div className="gap-[40px] items-center hidden sm:flex">
-            <button>
-              <Link
-                href={"/login"}
-                className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl"
-              >
+            <button
+              onClick={() => {
+                const whatsappLink = `https://wa.me/91${whatsappNumber}`;
+                window.open(whatsappLink, "_blank");
+              }}
+            >
+              <div className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl">
                 {whatsappsvg} <h1 className="ml-2">+91{whatsappNumber}</h1>
-              </Link>
+              </div>
             </button>
+
             <div className="flex gap-[24px]">
               {userValidate() && (
                 <Link href={"/wishlist"}>

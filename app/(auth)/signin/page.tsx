@@ -1,48 +1,46 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { fetchGuestLoginData, handleSuccessfulLogin } from "@/hooks/guestLogin";
 import banner from "../../../assets/signin/banner.png";
 import logo from "../../../assets/home/logo.png";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useRouter } from "next/navigation";
-import { useGuestLogin,handleSuccessfulLogin  } from "@/hooks/guestLogin";
-import { getCookie } from 'cookies-next';
 
-// Define the structure of the input data
 interface LoginInput {
   name: string;
   password: string;
 }
 
-export default function Signin() {
-  const [showPassword, setShowPassword] = React.useState<boolean>(false);
-  const [userData, setUserData] = React.useState<LoginInput>({
-    name: "",
-    password: "",
-  });
-  const router = useRouter();
-  const { data, error, isLoading, refetch } = useGuestLogin(userData);
- 
-  const handleSubmit = async () => {
+export default function SignIn() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [userData, setUserData] = useState<LoginInput>({ name: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
     try {
-      // Trigger refetch or query update if userData is valid
-      const result = await refetch();
-      if (result.data && result.data?.message === "success") {
-        handleSuccessfulLogin(result.data);
-        // router.push("/");
+      const data = await fetchGuestLoginData(userData);
+      if (data.message === "success") {
+        handleSuccessfulLogin(data);
         window.location.reload();
+      } else {
+        setError("Login failed. Please check your credentials.");
       }
-    } catch (error) {
-      console.error("Error during login:", error);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    key: keyof LoginInput
-  ) => {
-    setUserData({ ...userData, [key]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -51,7 +49,7 @@ export default function Signin() {
         <div className="h-[80vh] sm:h-[100vh] hidden sm:block">
           <Image
             src={banner}
-            alt="lathif signin banner"
+            alt="Lathif signin banner"
             className="w-full h-full object-contain"
           />
         </div>
@@ -59,57 +57,60 @@ export default function Signin() {
           <div className="h-[100px] w-[200px]">
             <Image
               src={logo}
-              alt="lathif signin banner"
+              alt="Lathif logo"
               className="w-full h-full object-contain"
             />
           </div>
-          <div className="flex flex-col gap-3 w-full">
-            <label className="text-[rgba(27, 37, 89, 0.80] text-[14px] font-semibold">
-              Name
-            </label>
-            <input
-              className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4 text-[14px] placeholder:text-[14px]"
-              placeholder="Name"
-              value={userData.name}
-              onChange={(e) => handleChange(e, "name")}
-            />
-          </div>
-          <div className="flex flex-col gap-3 w-full">
-            <label className="text-[rgba(27, 37, 89, 0.80] text-[14px] font-semibold">
-              Password
-            </label>
-            <div className="relative">
-              <style>
-                {`
-                  input::-ms-reveal,
-                  input::-ms-clear {
-                    display: none;
-                  }
-                `}
-              </style>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+            <div className="flex flex-col gap-3">
+              <label htmlFor="name" className="text-[rgba(27, 37, 89, 0.80)] text-sm font-semibold">
+                Name
+              </label>
               <input
-                className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4 no-eye-icon text-[14px] placeholder:text-[14px]"
-                placeholder="Password"
-                type={showPassword ? "text" : "password"}
-                value={userData.password}
-                onChange={(e) => handleChange(e, "password")}
+                id="name"
+                name="name"
+                type="text"
+                value={userData.name}
+                onChange={handleChange}
+                className="rounded-lg border border-[#E6E6E8] h-[50px] w-full px-4 text-sm"
+                placeholder="Enter your name"
+                required
               />
-              <div
-                className="absolute top-0 right-0 h-full flex items-center pr-4 cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="password" className="text-[rgba(27, 37, 89, 0.80)] text-sm font-semibold">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={userData.password}
+                  onChange={handleChange}
+                  className="rounded-lg border border-[#E6E6E8] h-[50px] w-full px-4 text-sm"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute top-1/2 right-4 transform -translate-y-1/2"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
             </div>
-          </div>
-          <button
-            onClick={handleSubmit}
-            className="bg-black text-white rounded-lg h-[50px] w-full"
-            disabled={isLoading} // Disable the button while loading
-          >
-            Submit
-          </button>
-          {error && <p className="text-red-500">{error.message}</p>}
+            <button
+              type="submit"
+              className="bg-black text-white rounded-lg h-[50px] w-full disabled:opacity-50"
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+          {error && <p className="text-red-500 text-sm">Invalid Credentials</p>}
         </div>
       </div>
     </div>
