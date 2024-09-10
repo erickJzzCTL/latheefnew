@@ -1,105 +1,40 @@
-'use client';
+"use client";
 
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
-import img1 from '../../../../assets/products/img1.png';
-import { useProduct } from '@/hooks/useProduct';
-import { useAddToWishlist } from '@/hooks/useAddToWishlist';
-import { useAddToCart } from '@/hooks/useAddToCart';
-import useStore from '@/store/store';
-import userValidate from '@/utilities/userValidate';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import img1 from "../../../../assets/products/img1.png";
+import { useProduct } from "@/hooks/useProduct";
+import { useAddToWishlist } from "@/hooks/useAddToWishlist";
+import { useAddToCart } from "@/hooks/useAddToCart";
+import useStore from "@/store/store";
+import userValidate from "@/utilities/userValidate";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useQueryClient } from "@tanstack/react-query";
 
-const wishSvg = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="54"
-    height="54"
-    viewBox="0 0 81 81"
-    className="group"
-  >
-    <circle
-      cx="40.5"
-      cy="40.3335"
-      r="40"
-      className="fill-[#5B5B5B] group-hover:fill-white transition-colors duration-300"
-    />
-    <mask
-      id="mask0_296_115"
-      style={{ maskType: 'alpha' }}
-      maskUnits="userSpaceOnUse"
-      x="20"
-      y="20"
-      width="41"
-      height="41"
-    >
-      <rect x="20.5" y="20.3335" width="40" height="40" fill="white" />
-    </mask>
-    <g mask="url(#mask0_296_115)">
-      <path
-        d="M40.5003 54.2114L38.6607 52.5577C35.898 50.0513 33.6132 47.8975 31.8066 46.0964C29.9999 44.295 28.5682 42.6918 27.5116 41.2868C26.4549 39.8821 25.7167 38.6006 25.297 37.4422C24.877 36.2842 24.667 35.1091 24.667 33.9168C24.667 31.5516 25.4645 29.5713 27.0595 27.976C28.6548 26.381 30.635 25.5835 33.0003 25.5835C34.4553 25.5835 35.8303 25.9238 37.1253 26.6043C38.4203 27.2849 39.5453 28.2609 40.5003 29.5322C41.4553 28.2609 42.5803 27.2849 43.8753 26.6043C45.1703 25.9238 46.5453 25.5835 48.0003 25.5835C50.3656 25.5835 52.3459 26.381 53.9412 27.976C55.5362 29.5713 56.3337 31.5516 56.3337 33.9168C56.3337 35.1091 56.1237 36.2842 55.7037 37.4422C55.2839 38.6006 54.5457 39.8821 53.4891 41.2868C52.4324 42.6918 51.0034 44.295 49.202 46.0964C47.4009 47.8975 45.1135 50.0513 42.3399 52.5577L40.5003 54.2114ZM40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
-        className="fill-white group-hover:fill-black transition-colors duration-300"
-      />
-    </g>
-  </svg>
-);
-const wishSvgActive = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="54"
-    height="54"
-    viewBox="0 0 81 81"
-    className="group"
-  >
-    <circle
-      cx="40.5"
-      cy="40.3335"
-      r="40"
-      className="fill-white group-hover:fill-[#5B5B5B] transition-colors duration-300"
-    />
-    <mask
-      id="mask0_296_115"
-      style={{ maskType: 'alpha' }}
-      maskUnits="userSpaceOnUse"
-      x="20"
-      y="20"
-      width="41"
-      height="41"
-    >
-      <rect x="20.5" y="20.3335" width="40" height="40" fill="white" />
-    </mask>
-    <g mask="url(#mask0_296_115)">
-      <path
-        d="M40.5003 54.2114L38.6607 52.5577C35.898 50.0513 33.6132 47.8975 31.8066 46.0964C29.9999 44.295 28.5682 42.6918 27.5116 41.2868C26.4549 39.8821 25.7167 38.6006 25.297 37.4422C24.877 36.2842 24.667 35.1091 24.667 33.9168C24.667 31.5516 25.4645 29.5713 27.0595 27.976C28.6548 26.381 30.635 25.5835 33.0003 25.5835C34.4553 25.5835 35.8303 25.9238 37.1253 26.6043C38.4203 27.2849 39.5453 28.2609 40.5003 29.5322C41.4553 28.2609 42.5803 27.2849 43.8753 26.6043C45.1703 25.9238 46.5453 25.5835 48.0003 25.5835C50.3656 25.5835 52.3459 26.381 53.9412 27.976C55.5362 29.5713 56.3337 31.5516 56.3337 33.9168C56.3337 35.1091 56.1237 36.2842 55.7037 37.4422C55.2839 38.6006 54.5457 39.8821 53.4891 41.2868C52.4324 42.6918 51.0034 44.295 49.202 46.0964C47.4009 47.8975 45.1135 50.0513 42.3399 52.5577L40.5003 54.2114ZM40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
-        className="fill-black group-hover:fill-white transition-colors duration-300"
-      />
-    </g>
-  </svg>
-);
 export default function ProductPage() {
   const params = useParams();
   const productId = params.id as string; // Type-cast to string, since useParams returns string | undefined
+
+  const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error } = useProduct(productId);
 
   const addToWishlistMutation = useAddToWishlist();
   const handleAddToWishlist = (productId: number) => {
     addToWishlistMutation.mutate(productId, {
-      onSuccess: data => {
-        // Show a success message to the user
-        // alert(data.message);
+      onSuccess: (data) => {
         toast.success(data.message);
+        queryClient.invalidateQueries(["product", productId] as any);
       },
     });
-    // window.location.reload();
   };
 
   const addToCartMutation = useAddToCart();
 
   const [isModalOpen, setIsModalOpen] = useStore(
-    state =>
+    (state) =>
       [state.isModalOpen, state.setIsModalOpen] as [
         boolean,
         (open: boolean) => void
@@ -110,10 +45,9 @@ export default function ProductPage() {
     addToCartMutation.mutate(
       { product_id: productId, quantity: 1 },
       {
-        onSuccess: data => {
-          // Show a success message to the user
-          // alert(data.message);
+        onSuccess: (data) => {
           toast.success(data.message);
+          queryClient.invalidateQueries(["product", productId] as any);
         },
       }
     );
@@ -121,20 +55,20 @@ export default function ProductPage() {
 
   const handleDownloadImage = (imageUrl: string) => {
     fetch(imageUrl)
-      .then(res => res.blob())
-      .then(blob => {
+      .then((res) => res.blob())
+      .then((blob) => {
         const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute('download', `product-${productId}.png`);
+        link.setAttribute("download", `product-${productId}.png`);
         document.body.appendChild(link);
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
       })
-      .catch(err => {
-        console.error('Error downloading image:', err);
-        alert('Error downloading image. Please try again later.');
+      .catch((err) => {
+        console.error("Error downloading image:", err);
+        toast("Error downloading image. Please try again later.");
       });
   };
 
@@ -147,11 +81,11 @@ export default function ProductPage() {
       // Fallback to clipboard copy
       navigator.clipboard.writeText(window.location.href).then(
         () => {
-          alert('Product link copied to clipboard!');
+          toast("Product link copied to clipboard!");
         },
-        err => {
-          console.error('Failed to copy product link to clipboard:', err);
-          alert('Failed to copy product link to clipboard.');
+        (err) => {
+          console.error("Failed to copy product link to clipboard:", err);
+          toast("Failed to copy product link to clipboard.");
         }
       );
     }
@@ -205,7 +139,7 @@ export default function ProductPage() {
               />
               <mask
                 id="mask0_296_110"
-                style={{ maskType: 'alpha' }}
+                style={{ maskType: "alpha" }}
                 maskUnits="userSpaceOnUse"
                 x="20"
                 y="20"
@@ -232,7 +166,56 @@ export default function ProductPage() {
             }}
             className="w-14 h-14 cursor-pointer"
           >
-            {data.in_favourite === true ? wishSvg : wishSvgActive}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="54"
+              height="54"
+              viewBox="0 0 81 81"
+              className="group"
+            >
+              <circle
+                cx="40.5"
+                cy="40.3335"
+                r="40"
+                className="fill-[#5B5B5B] group-hover:fill-white transition-colors duration-300"
+              />
+              <mask
+                id="mask0_296_115"
+                style={{ maskType: "alpha" }}
+                maskUnits="userSpaceOnUse"
+                x="20"
+                y="20"
+                width="41"
+                height="41"
+              >
+                <rect
+                  x="20.5"
+                  y="20.3335"
+                  width="40"
+                  height="40"
+                  fill="white"
+                />
+              </mask>
+              <g mask="url(#mask0_296_115)">
+                {/* Fill path */}
+                <path
+                  d="M40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
+                  className={`${
+                    data.in_favourite ? "fill-red-500" : "fill-transparent"
+                  } transition-colors duration-300`}
+                />
+                {/* Outline path */}
+                <path
+                  d="M40.5003 54.2114L38.6607 52.5577C35.898 50.0513 33.6132 47.8975 31.8066 46.0964C29.9999 44.295 28.5682 42.6918 27.5116 41.2868C26.4549 39.8821 25.7167 38.6006 25.297 37.4422C24.877 36.2842 24.667 35.1091 24.667 33.9168C24.667 31.5516 25.4645 29.5713 27.0595 27.976C28.6548 26.381 30.635 25.5835 33.0003 25.5835C34.4553 25.5835 35.8303 25.9238 37.1253 26.6043C38.4203 27.2849 39.5453 28.2609 40.5003 29.5322C41.4553 28.2609 42.5803 27.2849 43.8753 26.6043C45.1703 25.9238 46.5453 25.5835 48.0003 25.5835C50.3656 25.5835 52.3459 26.381 53.9412 27.976C55.5362 29.5713 56.3337 31.5516 56.3337 33.9168C56.3337 35.1091 56.1237 36.2842 55.7037 37.4422C55.2839 38.6006 54.5457 39.8821 53.4891 41.2868C52.4324 42.6918 51.0034 44.295 49.202 46.0964C47.4009 47.8975 45.1135 50.0513 42.3399 52.5577L40.5003 54.2114ZM40.5003 50.8335C43.167 48.4341 45.3614 46.3774 47.0837 44.6635C48.8059 42.9499 50.167 41.4611 51.167 40.1972C52.167 38.9334 52.8614 37.811 53.2503 36.8302C53.6392 35.8496 53.8337 34.8785 53.8337 33.9168C53.8337 32.2502 53.2781 30.8613 52.167 29.7502C51.0559 28.6391 49.667 28.0835 48.0003 28.0835C46.6842 28.0835 45.4678 28.4568 44.3512 29.2035C43.2348 29.9504 42.3507 30.9895 41.6991 32.3206H39.3016C38.6391 30.9786 37.7523 29.937 36.6412 29.1956C35.53 28.4542 34.3164 28.0835 33.0003 28.0835C31.3442 28.0835 29.958 28.6391 28.8416 29.7502C27.7252 30.8613 27.167 32.2502 27.167 33.9168C27.167 34.8785 27.3614 35.8496 27.7503 36.8302C28.1392 37.811 28.8337 38.9334 29.8337 40.1972C30.8337 41.4611 32.1948 42.9472 33.917 44.6556C35.6392 46.3639 37.8337 48.4232 40.5003 50.8335Z"
+                  className={`${
+                    data.in_favourite
+                      ? "fill-red-500 group-hover:fill-red-500 "
+                      : "fill-white group-hover:fill-black "
+                  }  transition-colors duration-300`}
+                  fillRule="evenodd"
+                />
+              </g>
+            </svg>
           </div>
 
           {/* Cart */}
@@ -260,7 +243,7 @@ export default function ProductPage() {
               {/* Mask and Path */}
               <mask
                 id="mask0_296_120"
-                style={{ maskType: 'alpha' }}
+                style={{ maskType: "alpha" }}
                 maskUnits="userSpaceOnUse"
                 x="20"
                 y="21"
@@ -278,7 +261,12 @@ export default function ProductPage() {
               <g mask="url(#mask0_296_120)">
                 <path
                   d="M32.4229 57.2211C31.6132 57.2211 30.9247 56.9373 30.3575 56.3698C29.7903 55.8026 29.5067 55.1141 29.5067 54.3044C29.5067 53.4944 29.7903 52.8058 30.3575 52.2386C30.9247 51.6714 31.6132 51.3878 32.4229 51.3878C33.2329 51.3878 33.9215 51.6714 34.4888 52.2386C35.056 52.8058 35.3396 53.4944 35.3396 54.3044C35.3396 55.1141 35.056 55.8026 34.4888 56.3698C33.9215 56.9373 33.2329 57.2211 32.4229 57.2211ZM48.5771 57.2211C47.7671 57.2211 47.0785 56.9373 46.5113 56.3698C45.944 55.8026 45.6604 55.1141 45.6604 54.3044C45.6604 53.4944 45.944 52.8058 46.5113 52.2386C47.0785 51.6714 47.7671 51.3878 48.5771 51.3878C49.3868 51.3878 50.0753 51.6714 50.6425 52.2386C51.2097 52.8058 51.4933 53.4944 51.4933 54.3044C51.4933 55.1141 51.2097 55.8026 50.6425 56.3698C50.0753 56.9373 49.3868 57.2211 48.5771 57.2211ZM29.3271 28.3748H52.4679C53.1496 28.3748 53.665 28.665 54.0142 29.2453C54.3636 29.8253 54.3803 30.4176 54.0642 31.0223L48.7242 40.6953C48.4508 41.1761 48.0893 41.5505 47.6396 41.8186C47.1896 42.0869 46.6965 42.2211 46.1604 42.2211H34L32.0704 45.7465C31.9849 45.8748 31.9822 46.0137 32.0625 46.1632C32.1425 46.3129 32.2626 46.3878 32.4229 46.3878H51.4933V48.8878H32.4229C31.3118 48.8878 30.4769 48.4086 29.9183 47.4503C29.3594 46.4919 29.3397 45.5351 29.8592 44.5798L32.2371 40.3044L26.1733 27.5415H23V25.0415H27.7438L29.3271 28.3748Z"
-                  className="fill-white group-hover:fill-black transition-colors duration-300"
+                  // className="fill-white group-hover:fill-black transition-colors duration-300"
+                  className={`${
+                    data.in_cart
+                      ? "fill-blue-500  group-hover:fill-blue-500 "
+                      : "fill-white  group-hover:fill-black "
+                  }transition-colors duration-300`}
                 />
               </g>
             </svg>
@@ -301,7 +289,7 @@ export default function ProductPage() {
               />
               <mask
                 id="mask0_296_125"
-                style={{ maskType: 'alpha' }}
+                style={{ maskType: "alpha" }}
                 maskUnits="userSpaceOnUse"
                 x="20"
                 y="20"

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '@/utilities/customaxios';
+import { getCookie } from "cookies-next";
 
 interface Product {
   id: number;
@@ -17,8 +18,18 @@ interface ProductResponse {
 }
 
 const fetchProduct = async (productId: string): Promise<Product> => {
+  const userToken = getCookie("userToken");
+  const headers: Record<string, string> = {};
+
+  // Set Authorization header if token exists
+  if (userToken) {
+    headers["Authorization"] = `Bearer ${userToken}`;
+  }
   const { data } = await axios.get<ProductResponse>(
-    `/api/get-products/${productId}`
+    `/api/get-products/${productId}`,
+    {
+      headers,
+    }
   );
   return data.product; // Return the 'product' object
 };

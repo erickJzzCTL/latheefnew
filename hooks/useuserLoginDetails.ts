@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/utilities/customaxios";
+import { getCookie } from "cookies-next";
 
 interface UserData {
   id: number;
@@ -22,10 +23,15 @@ interface FetchUserDataResponse {
 }
 
 export const fetchUserData = (token: string) => {
+  const userToken = getCookie("userToken");
+  const headers: Record<string, string> = {};
+
+  // Set Authorization header if token exists
+  if (userToken) {
+    headers["Authorization"] = `Bearer ${userToken}`;
+  }
   return axios.get<FetchUserDataResponse>("api/profile-view", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers
   });
 };
 

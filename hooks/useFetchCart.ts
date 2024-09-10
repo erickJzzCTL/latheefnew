@@ -28,10 +28,14 @@ interface CartResponse {
 
 const fetchCart = async () => {
   const userToken = getCookie('userToken');
+  const headers: Record<string, string> = {};
+  
+  if (userToken) {
+    headers['Authorization'] = `Bearer ${userToken}`;
+  }
+
   const response = await axios.get<CartResponse>('/api/get-cart-items', {
-    headers: {
-      Authorization: `Bearer ${userToken}`,
-    },
+    headers,
   });
   return response.data.cart_items;
 };

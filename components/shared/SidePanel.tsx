@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useStore from "@/store/store";
 import { useSetHomeData } from "@/hooks/useHomeData";
+import { useRouter } from "next/navigation";
 
 interface SubCategory {
   id: number;
@@ -13,7 +14,7 @@ interface SubCategory {
 interface Category {
   id: number;
   name: string;
-  subcategories: SubCategory[]; // Use SubCategory objects instead of names only
+  subcategories: SubCategory[];
 }
 
 interface HomeData {
@@ -27,7 +28,8 @@ interface HomeData {
 }
 
 export default function SidePanel() {
-  const [openCategory, setOpenCategory] = useState<number | null>(null);
+  const openCategory = useStore((state) => state.openCategory);
+  const setOpenCategory = useStore((state) => state.setOpenCategory);
   const isOpen = useStore((state) => state.isOpen);
   const togglePanel = useStore((state) => state.togglePanel);
   const setSelectedSubcategory = useStore(
@@ -35,6 +37,7 @@ export default function SidePanel() {
   );
   const [isMobile, setIsMobile] = useState(false);
   const { homeData } = useSetHomeData() as { homeData: HomeData };
+  const router = useRouter();
 
   const categories: Category[] =
     homeData?.data?.main_categories?.map((category) => ({
@@ -50,10 +53,8 @@ export default function SidePanel() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
     checkMobile();
     window.addEventListener("resize", checkMobile);
-
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -62,9 +63,10 @@ export default function SidePanel() {
   };
 
   const handleSubcategoryClick = (subcategoryId: number) => {
-    setSelectedSubcategory(subcategoryId.toString()); // Convert ID to string
-    if (isMobile) togglePanel(); // Close the panel on mobile after selection
+    setSelectedSubcategory(subcategoryId.toString());
+    if (isMobile) togglePanel(); // Close panel on mobile after selection
   };
+  
 
   const panelContent = (
     <div className="border-[1px] border-[#E6E6E8] md:rounded-[20px] px-6 py-4 md:h-fit h-full bg-white mb-10">

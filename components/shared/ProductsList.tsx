@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import useStore from "@/store/store";
 import { useSubCategoryProducts } from "@/hooks/useSubCategoryProducts";
+import { useParams } from "next/navigation";
 
 interface Product {
   id: number;
@@ -16,26 +17,82 @@ interface Product {
 }
 
 export default function ProductGrid() {
-  const togglePanel = useStore((state) => state.togglePanel);
+  const { categoryid } = useParams();
   const selectedSubcategory = useStore((state) => state.selectedSubcategory);
+  const setSelectedSubcategory = useStore((state) => state.setSelectedSubcategory);
+  const setOpenCategory = useStore((state) => state.setOpenCategory);
+  const togglePanel = useStore((state) => state.togglePanel);
 
-  // Ensure categoryId is a valid string
-  const categoryId = selectedSubcategory || ""; // Keep as string
+  // State to force refetch
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
-  const { data, isLoading, error } = useSubCategoryProducts(categoryId);
+  // Use URL categoryid if selectedSubcategory is invalid or missing
+  const subcategoryId = selectedSubcategory && !isNaN(Number(selectedSubcategory))
+    ? selectedSubcategory.toString()
+    : categoryid?.toString() || null;
+
+  // Fetch products using the determined subcategoryId
+  const { data, isLoading, error } = useSubCategoryProducts(
+    subcategoryId !== null ? subcategoryId : ""
+  );
+
+  // Effect to update selected subcategory and trigger refetch
+  useEffect(() => {
+    if (subcategoryId && typeof subcategoryId === "string") {
+      setSelectedSubcategory(subcategoryId);
+      setRefetchTrigger(prev => prev + 1); // Trigger refetch
+    }
+  }, [subcategoryId, setSelectedSubcategory]);
+
+  // Effect to reset selected subcategory when categoryid changes
+  useEffect(() => {
+    if (categoryid) {
+      setSelectedSubcategory(categoryid.toString());
+      setRefetchTrigger(prev => prev + 1); // Trigger refetch
+    }
+  }, [categoryid, setSelectedSubcategory]);
+
+  // Effect to refetch data when trigger changes
+  useEffect(() => {
+    // This effect will run when refetchTrigger changes, causing a re-render
+    // which will in turn cause useSubCategoryProducts to refetch
+  }, [refetchTrigger]);
+
+  if (!subcategoryId || isNaN(Number(subcategoryId))) {
+    return (
+      <div>
+        <p className="md:text-[28px] text-[14px] font-[600]">
+          No valid subcategory selected
+        </p>
+      </div>
+    );
+  }
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading products: {error.message}</div>; // Display error message
+  if (error) return <div>Error loading products: {error.message}</div>;
 
   const products = data?.data.products || [];
   const subcategoryName = data?.data.subcategory_name || "Products";
 
+  setOpenCategory(
+    typeof products[0]?.maincategory === "number"
+      ? products[0].maincategory
+      : typeof categoryid === "string"
+      ? parseInt(categoryid)
+      : null
+  );
+
   if (!products || products.length === 0) {
     return (
-      <div className="flex justify-center items-center">
-        <p className="md:text-[28px] text-[14px] font-[600] mt-[10%]">
-          No products found
+      <div>
+        <p className="md:text-[28px] text-[14px] font-[600]">
+          {subcategoryName}
         </p>
+        <div className="flex justify-center items-center">
+          <p className="md:text-[28px] text-[14px] font-[600] mt-[10%] mb-[10%]">
+            No products found
+          </p>
+        </div>
       </div>
     );
   }
@@ -71,7 +128,10 @@ export default function ProductGrid() {
       </div>
       <div className="columns-2 gap-3 w-full mx-auto space-y-3 md:pb-10 pb-4">
         {products.map((product: Product) => (
-          <div key={product.id} className="bg-gray-100 break-inside-avoid rounded-[20px] overflow-hidden">
+          <div
+            key={product.id}
+            className="bg-gray-100 break-inside-avoid rounded-[20px] overflow-hidden"
+          >
             <Link href={`/products/${product.id}`}>
               <Image
                 src={product.image}

@@ -117,7 +117,7 @@ export default function SignInPopup() {
   };
   return (
     <div>
-      <ToastContainer position="bottom-left" />
+      {/* <ToastContainer position="bottom-left" /> */}
       <Modal
         open={isModalOpen}
         onCancel={handleCancel}
@@ -188,17 +188,17 @@ export default function SignInPopup() {
                     onClick={handleSubmit}
                     className="bg-black text-white rounded-lg h-[50px] w-full"
                   >
-                    {isLoading ? 'Submitting...' : 'Submit'}
+                    {isLoading ? 'Submitting...' : 'Login'}
                   </button>
                 </Link>
                 <div className="flex justify-center">
                   <h1>
-                    <span>don&apos;t have an account?</span>
+                    <span>Don&apos;t have an account?</span>
                     <span
                       onClick={SignUpPopupFn}
                       className="ml-2 font-bold cursor-pointer"
                     >
-                      signup
+                      Signup
                     </span>
                   </h1>
                 </div>

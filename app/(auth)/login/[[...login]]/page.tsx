@@ -63,12 +63,9 @@ const Login = () => {
           <div className="flex justify-end w-full">
             <Link href="/forgot">Forgot Password? </Link>
           </div>
-          <Link
-            className="w-full"
-            href={"/"}
-          >
+          <Link className="w-full" href={"/"}>
             <button className="bg-black text-white rounded-lg h-[50px] w-full">
-              Submit
+              Login
             </button>
           </Link>
           <div className="flex justify-center">

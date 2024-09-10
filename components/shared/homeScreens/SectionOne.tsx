@@ -1,14 +1,15 @@
-import React from 'react';
-
-import { useSetHomeData } from '@/hooks/useHomeData';
-import { AxiosResponse } from 'axios';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useState } from "react";
+import { useSetHomeData } from "@/hooks/useHomeData";
+import { AxiosResponse } from "axios";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface MainCategory {
   id: number;
   name: string;
   image: string;
+  subcategories?: { id: number; name: string }[];
 }
 
 interface HomeData {
@@ -34,79 +35,110 @@ const NavSvg: React.FC = () => (
 const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({
   category,
   index,
-}) => (
-  <Link
-    href={`/categoryProduct/${category.id}`}
-    className={`relative ${index === 2 ? 'col-span-2 md:col-span-1' : ''}`}
-    onClick={() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }}
-  >
-    <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
-      <Image
-        src={category?.image || '/'}
-        alt={`${category.name}`}
-        width={1000}
-        height={1000}
-        className="w-full h-full object-cover md:object-[15%_50%]"
-      />
-    </div>
-    {index !== 2 ? (
+}) => {
+  const [activeSubcategory, setActiveSubcategory] = useState(
+    category.subcategories?.[0]?.id
+  );
+
+  const router = useRouter();
+
+  const handleImageClick = () => {
+    if (category.name !== "Kids") {
+      router.push(`/categoryProduct/${category.id}`);
+    }
+  };
+
+  return (
+    <div
+      className={`relative ${index === 2 ? "col-span-2 md:col-span-1" : ""}`}
+    >
+      <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
+        <Image
+          src={category?.image || "/"}
+          alt={`${category.name}`}
+          width={1000}
+          height={1000}
+          className={`w-full h-full object-cover md:object-[15%_50%] ${
+            category.name !== "Kids" ? "cursor-pointer" : ""
+          }`}
+          onClick={handleImageClick}
+        />
+      </div>
       <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4">
-        <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[10px] sm:text-[14px] lg:text-[18px] flex justify-between items-center">
-          <h1>{category.name}</h1>
-          <div className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center text-white">
-            <NavSvg />
-          </div>
+        <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[12px] sm:text-[14px] lg:text-[18px]">
+          {category.id !== 1 && category.id !== 2 && (
+            <h1 className="text-2xl">{category.name}</h1>
+          )}
+          {category.subcategories ? (
+            <div className="flex gap-4 mt-4">
+              {category.subcategories.map((subcategory, subIndex) => (
+                <Link
+                  key={subcategory.id}
+                  href={`/categoryProduct/${subcategory.id}`}
+                  className={`px-[32px] py-[12px] rounded-lg bg-[#E6E6E8] hover:bg-black hover:text-white `}
+                  onClick={(e) => {
+                    setActiveSubcategory(subcategory.id);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  {subIndex === 0 ? "Boys" : "Girls"}
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <Link
+              href={`/categoryProduct/${category.id}`}
+              className="flex justify-between items-center"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              <span>{category.name}</span>
+              <div className="rounded-full bg-black w-[26px] sm:w-[30px] md:w-[46px] h-[26px] sm:h-[30px] md:h-[46px] flex items-center justify-center text-white">
+                <NavSvg />
+              </div>
+            </Link>
+          )}
         </div>
       </div>
-    ) : (
-      <>
-        <div className="absolute bottom-0 w-full px-2 sm:px-4 py-2 sm:my-4 hidden sm:block">
-          <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[12px] sm:text-[14px] lg:text-[18px]">
-            <h1 className="text-2xl">{category.name}</h1>
-            <div className="flex gap-4 mt-4">
-              <button className="px-[32px] py-[12px] bg-black rounded-lg text-white">
-                Boys
-              </button>
-              <button className="px-[32px] py-[12px] bg-[#E6E6E8] rounded-lg">
-                Girls
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="absolute right-0 w-1/2 px-2 sm:px-4 py-2 sm:my-4 flex sm:hidden top-0 h-full items-center">
-          <div className="bg-white text-black px-2 sm:px-6 py-2 sm:py-4 rounded-lg text-[12px] sm:text-[14px] lg:text-[18px] w-full">
-            <h1 className="text-[16px] sm:text-2xl text-center">
-              {category.name}
-            </h1>
-            <div className="flex gap-2 mt-2 flex-col">
-              <button className="text-[10px] px-[32px] py-[12px] bg-black rounded-lg text-white">
-                Boys
-              </button>
-              <button className="text-[10px] px-[32px] py-[12px] bg-[#E6E6E8] rounded-lg">
-                Girls
-              </button>
-            </div>
-          </div>
-        </div>
-      </>
-    )}
-  </Link>
-);
+    </div>
+  );
+};
 
 const SectionOne: React.FC = () => {
   const { homeData } = useSetHomeData() as {
     homeData: AxiosResponse<HomeData> | undefined;
   };
 
-  const mainCategories = homeData?.data?.main_categories ?? [];
+  // Combine boys and girls categories into a single "Kids" category
+  const mainCategories =
+    homeData?.data?.main_categories.reduce((acc, category) => {
+      if (category.id === 3 || category.id === 5) {
+        const kidsCategory = acc.find((c) => c.name === "Kids");
+        if (kidsCategory) {
+          kidsCategory.subcategories?.push({
+            id: category.id,
+            name: category.name,
+          });
+        } else {
+          acc.push({
+            id: acc.length + 1,
+            name: "Kids",
+            image: category.image, // You might want to use a different image for the combined category
+            subcategories: [{ id: category.id, name: category.name }],
+          });
+        }
+      } else {
+        acc.push(category);
+      }
+      return acc;
+    }, [] as MainCategory[]) ?? [];
 
   return (
     <div className="container mx-auto mt-10 md:mb-24 mb-14">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-        {mainCategories?.map((category, index) => (
-          <CategoryCard key={category?.id} category={category} index={index} />
+        {mainCategories.map((category, index) => (
+          <CategoryCard key={category.id} category={category} index={index} />
         ))}
       </div>
     </div>

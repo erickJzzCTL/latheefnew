@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from '@/utilities/customaxios';
-import { getCookie } from 'cookies-next';
+import { useQuery } from "@tanstack/react-query";
+import axios from "@/utilities/customaxios";
+import { getCookie } from "cookies-next";
 
 interface Product {
   id: number;
@@ -18,7 +18,6 @@ interface FavouriteItem {
   product: Product;
   date: string;
   user: number;
-
 }
 
 interface WishlistResponse {
@@ -26,13 +25,17 @@ interface WishlistResponse {
 }
 
 const fetchWishlist = async () => {
-  const userToken = getCookie('userToken');
+  const userToken = getCookie("userToken");
+  const headers: Record<string, string> = {};
+
+  // Set Authorization header if token exists
+  if (userToken) {
+    headers["Authorization"] = `Bearer ${userToken}`;
+  }
   const response = await axios.get<WishlistResponse>(
-    '/api/get-favourite-items',
+    "/api/get-favourite-items",
     {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
+      headers,
     }
   );
   return response.data.favourite_items;
@@ -40,7 +43,7 @@ const fetchWishlist = async () => {
 
 export const useFetchWishlist = () => {
   return useQuery({
-    queryKey: ['wishlist'],
+    queryKey: ["wishlist"],
     queryFn: fetchWishlist,
   });
 };

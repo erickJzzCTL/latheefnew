@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface PanelState {
   isOpen: boolean;
@@ -6,33 +6,40 @@ interface PanelState {
   homeData: Record<string, any>;
   setHomeData: (data: Record<string, any>) => void;
   isModalOpen: boolean;
-  setIsModalOpen: () => void;
+  setIsModalOpen: (isOpen: boolean) => void;
   selectedSubcategory: string | null;
   setSelectedSubcategory: (subcategory: string | null) => void;
   forgetPwdMail: string | null;
   setForgetPwdMail: (forgetPwdMail: string | null) => void;
   userotp: string | null;
-  setUserOTP: (forgetPwdMail: string | null) => void;
+  setUserOTP: (otp: string | null) => void;
+  openCategory: number | null;
+  setOpenCategory: (id: number | null) => void;
 }
 
-const useStore = create<PanelState>(set => ({
+const useStore = create<PanelState>((set) => ({
   isOpen: false,
-  togglePanel: () => set(state => ({ isOpen: !state.isOpen })),
+  togglePanel: () => set((state) => ({ isOpen: !state.isOpen })),
 
   isModalOpen: false,
-  setIsModalOpen: () => set(state => ({ isModalOpen: !state.isModalOpen })),
+  setIsModalOpen: (isOpen) => set({ isModalOpen: isOpen }),
 
   homeData: {},
-  setHomeData: data => set({ homeData: data }),
+  setHomeData: (data) => set({ homeData: data }),
 
   selectedSubcategory: null,
-  setSelectedSubcategory: subcategory =>
-    set({ selectedSubcategory: subcategory }),
+  setSelectedSubcategory: (subcategory) => set({ selectedSubcategory: subcategory }),
+
 
   forgetPwdMail: null,
-  setForgetPwdMail: data => set({ forgetPwdMail: data }),
+  setForgetPwdMail: (data) => set({ forgetPwdMail: data }),
+
   userotp: null,
-  setUserOTP: data => set({ userotp: data }),
+  setUserOTP: (otp) => set({ userotp: otp }),
+
+  openCategory: null,
+  setOpenCategory: (id) => set({ openCategory: id }),
+
 }));
 
 export default useStore;

@@ -147,7 +147,7 @@ export default function SignupField({
 
   return (
     <div className="mb-10 sm:mb-0">
-      <ToastContainer position="bottom-left" />
+      {/* <ToastContainer position="bottom-left" /> */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-8 overflow-hidden">
         <div className="h-[60vh] sm:h-[90vh] mt-6 sm:mt-0 rounded-xl sm:rounded-none overflow-hidden">
           <Image

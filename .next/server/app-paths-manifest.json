@@ -1,1 +1,10 @@
-{}
+{
+  "/(root)/page": "app/(root)/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(root)/categoryFilter/[categoryid]/page": "app/(root)/categoryFilter/[categoryid]/page.js",
+  "/(root)/categoryProduct/[categoryid]/page": "app/(root)/categoryProduct/[categoryid]/page.js",
+  "/(root)/profile/page": "app/(root)/profile/page.js",
+  "/(root)/wishlist/page": "app/(root)/wishlist/page.js",
+  "/(root)/cart/page": "app/(root)/cart/page.js",
+  "/(root)/products/[id]/page": "app/(root)/products/[id]/page.js"
+}

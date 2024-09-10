@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useFetchWishlist } from '@/hooks/useFetchWishlist';
-import { useAddToCart } from '@/hooks/useAddToCart';
-import { useAddToWishlist } from '@/hooks/useAddToWishlist';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useFetchWishlist } from "@/hooks/useFetchWishlist";
+import { useAddToCart } from "@/hooks/useAddToCart";
+import { useAddToWishlist } from "@/hooks/useAddToWishlist";
+import { toast } from "react-toastify";
 
 // Define types
 interface Product {
@@ -35,10 +36,10 @@ export default function Wishlist() {
     addToCartMutation.mutate(
       { product_id: productId, quantity: 1 },
       {
-        onSuccess: data => {
-          alert(data.message);
-          setWishItems(prevItems =>
-            prevItems.map(item =>
+        onSuccess: (data) => {
+          toast.success(data.message);
+          setWishItems((prevItems) =>
+            prevItems.map((item) =>
               item.product.id === productId
                 ? { ...item, product: { ...item.product, in_cart: true } }
                 : item
@@ -53,10 +54,10 @@ export default function Wishlist() {
 
   const handleAddToWishlist = (productId: number) => {
     addToWishlistMutation.mutate(productId, {
-      onSuccess: data => {
-        alert(data.message);
-        setWishItems(prevItems =>
-          prevItems.filter(item => item.product.id !== productId)
+      onSuccess: (data) => {
+        toast.success(data.message);
+        setWishItems((prevItems) =>
+          prevItems.filter((item) => item.product.id !== productId)
         );
       },
     });
@@ -79,7 +80,7 @@ export default function Wishlist() {
         <p className="text-gray-600 mb-6 md:mb-10 text-sm md:text-[14px]">
           <Link href="/" className="hover:underline">
             Home
-          </Link>{' '}
+          </Link>{" "}
           / Wishlist
         </p>
 
@@ -95,48 +96,57 @@ export default function Wishlist() {
               <p>Action</p>
             </div>
           </div>
-
-          {wishItems.map((item, index) => (
-            <div
-              key={item.id}
-              className="flex flex-col md:grid md:grid-cols-3 gap-4 p-4 border-b border-gray-200 items-center"
-            >
-              <div className="flex justify-between md:justify-center items-center w-full md:w-auto">
-                <p>{index + 1}</p>
-              </div>
-              <div className="flex justify-center items-center w-full">
-                <div className="w-full h-40 md:w-40 md:h-40 relative rounded-[20px] overflow-hidden">
-                  <Image
-                    src={item.product.image}
-                    alt={`Product ${item.product.id}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-[20px]"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-2 md:space-y-0 md:space-x-2">
-                {item.product.in_cart ? null : (
-                  <button
-                    onClick={() => handleAddToCart(item.product.id)}
-                    className="bg-black text-white px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
-                  >
-                    Add to Cart
-                  </button>
-                )}
-                <button
-                  onClick={() => handleAddToWishlist(item.product.id)}
-                  className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
-                >
-                  Remove
-                </button>
-              </div>
+          {wishItems.length === 0 ? (
+            <div className="flex justify-center items-center p-4">
+              <p>No items in wishlist.</p>
             </div>
-          ))}
+          ) : (
+            <div>
+              {wishItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col md:grid md:grid-cols-3 gap-4 p-4 border-b border-gray-200 items-center"
+                >
+                  <div className="flex justify-between md:justify-center items-center w-full md:w-auto">
+                    <p>{index + 1}</p>
+                  </div>
+                  <div className="flex justify-center items-center w-full">
+                    <div className="w-full h-40 md:w-40 md:h-40 relative rounded-[20px] overflow-hidden">
+                      <Image
+                        src={item.product.image}
+                        alt={`Product ${item.product.id}`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-[20px]"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-2 md:space-y-0 md:space-x-2">
+                    {item.product.in_cart ? null : (
+                      <button
+                        onClick={() => handleAddToCart(item.product.id)}
+                        className="bg-black text-white px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleAddToWishlist(item.product.id)}
+                      className="bg-[#e6e6e8] text-gray-800 px-5 py-2 rounded-md text-sm font-[500] w-full md:w-auto"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        <button className="bg-black text-white px-4 py-4 rounded-[20px] text-sm w-full mt-6 md:mt-10">
-          Enquire Now
-        </button>
+        {/* {wishItems.length > 0 && (
+          <button className="bg-black text-white px-4 py-4 rounded-[20px] text-sm w-full mt-6 md:mt-10">
+            Enquire Now
+          </button>
+        )} */}
       </div>
     </div>
   );

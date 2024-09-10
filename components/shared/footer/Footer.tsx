@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import React from 'react';
-import logofooter from '../../../assets/home/logofooter.png';
-import Link from 'next/link';
+import Image from "next/image";
+import React from "react";
+import logofooter from "../../../assets/home/logofooter.png";
+import Link from "next/link";
 
 const fbicon = (
   <svg
@@ -26,15 +26,19 @@ const twittericon = (
     viewBox="0 0 40 40"
     fill="none"
   >
-    <g clip-path="url(#clip0_91_500)">
+    <g clip-path="url(#clip0_324_379)">
       <path
-        d="M20 0C8.95312 0 0 8.95312 0 20C0 31.0469 8.95312 40 20 40C31.0469 40 40 31.0469 40 20C40 8.95312 31.0469 0 20 0ZM27.9844 16.8906C27.9922 17.0625 27.9922 17.2422 27.9922 17.4219C27.9922 22.8516 23.8594 29.1172 16.2969 29.1172C13.9766 29.1172 11.8125 28.4375 10 27.2734C10.3203 27.3125 10.6484 27.3281 10.9844 27.3281C12.9063 27.3281 14.6797 26.6719 16.0859 25.5703C14.2891 25.5391 12.7656 24.3516 12.25 22.7188C12.5 22.7656 12.7578 22.7891 13.0234 22.7891C13.3984 22.7891 13.7656 22.7422 14.1094 22.6406C12.2266 22.2656 10.8125 20.6016 10.8125 18.6094V18.5625C11.3672 18.8672 12 19.0547 12.6719 19.0781C11.5703 18.3438 10.8438 17.0781 10.8438 15.6562C10.8438 14.9062 11.0469 14.1953 11.3984 13.5859C13.4297 16.0781 16.4531 17.7109 19.8672 17.8828C19.7969 17.5859 19.7578 17.2734 19.7578 16.9453C19.7578 14.6797 21.6016 12.8359 23.8672 12.8359C25.0469 12.8359 26.1172 13.3359 26.8672 14.1328C27.8047 13.9453 28.6797 13.6094 29.4766 13.1328C29.1719 14.0938 28.5156 14.8984 27.6719 15.4063C28.5 15.3047 29.2969 15.0859 30.0312 14.7578C29.4844 15.5859 28.7891 16.3047 27.9844 16.8906Z"
+        d="M20 0C8.95469 0 0 8.95469 0 20C0 31.0453 8.95469 40 20 40C31.0453 40 40 31.0453 40 20C40 8.95469 31.0453 0 20 0Z"
         fill="white"
+      />
+      <path
+        d="M22.1878 18.1901L30.7496 8.23773H28.7207L21.2865 16.8792L15.3489 8.23773H8.50049L17.4794 21.3052L8.50049 31.7418H10.5295L18.3802 22.6161L24.6507 31.7418H31.4991L22.1873 18.1901H22.1878ZM11.2605 9.76513H14.3769L28.7216 30.2838H25.6052L11.2605 9.76513Z"
+        fill="black"
       />
     </g>
     <defs>
-      <clipPath id="clip0_91_500">
-        <rect width="40" height="40" fill="white" />
+      <clipPath id="clip0_324_379">
+        <rect width="40" height="40" rx="20" fill="white" />
       </clipPath>
     </defs>
   </svg>
@@ -92,7 +96,7 @@ const Footer = () => {
     <div className="bg-black">
       <div className="container mx-auto">
         <div className="py-10">
-          <Link href={'/'}>
+          <Link href={"/"}>
             <div className="w-[240px]">
               <Image
                 src={logofooter}
@@ -103,12 +107,12 @@ const Footer = () => {
               />
             </div>
           </Link>
-          <div className="flex justify-between  mt-4 items-center flex-wrap">
+          <div className="flex justify-between  mt-8 items-center flex-wrap">
             <div className="flex text-white gap-4 text-[14px]">
               <p>Terms & Condition </p>
               <p>Privacy Policy</p>
             </div>
-            <div className="flex gap-4 mt-6 sm:mt-0">
+            <div className="flex items-center justify-center gap-4 mt-6 sm:mt-0">
               <div>{fbicon}</div>
               <div>{twittericon}</div>
               <div>{yticon}</div>

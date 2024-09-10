@@ -6,7 +6,7 @@ import useStore from '@/store/store';
 import axios from '@/utilities/customaxios';
 import { AxiosResponse } from 'axios';
 import { setCookie } from 'cookies-next';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'; 
 import { useRouter } from 'next/navigation';
 interface PsdsState {
   [key: string]: string; // Adjust this type if you have specific keys and value types
@@ -165,16 +165,16 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
     try {
       const codeString = code.join(''); // Convert code array to a single string
       if (userotp !== null && codeString === userotp) {
-        console.log('matched');
+        // console.log('matched');
         onVerify();
         setUserOTP('');
+      } else {
+        // Add this else block to show the error toast
+        toast.error('Incorrect OTP. Please try again.');
       }
-      //   if (response.status === 200) {
-      //     onVerify();
-      //   }
     } catch (error) {
       console.error('Error submitting email:', error);
-      // Display an error message to the user
+      toast.error('An error occurred. Please try again.');
     }
   };
 
@@ -324,7 +324,7 @@ const CreatePassword = () => {
   };
   return (
     <div className="w-full max-w-md p-6 bg-white ">
-      <ToastContainer position="bottom-left" />
+      {/* <ToastContainer position="bottom-left" /> */}
       <h2 className="text-2xl font-bold mb-2 text-left">Create Password</h2>
       <p className="text-sm text-gray-600 mb-6 text-left">
         Create your new password for your account.
