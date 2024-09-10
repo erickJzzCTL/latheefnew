@@ -3,7 +3,7 @@
 import { useUserLoginData } from '@/hooks/useuserLoginDetails';
 import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -23,24 +23,28 @@ interface User {
 
 const Profile = () => {
   const router = useRouter();
-  const userToken = getCookie('userToken') as string | undefined;
-
-  // Check if the user token is available
-  if (!userToken) {
-    router.push("/");
-    return null; // Avoid rendering the component if there's no token
-  }
+  const [userToken, setUserToken] = useState<string | undefined>(getCookie('userToken') as string | undefined);
 
   // Use the custom hook to fetch user data
-  const { data: userData, error, isLoading } = useUserLoginData(userToken);
-console.log('userData is', userData);
+  const { data: userData, error, isLoading } = useUserLoginData(userToken ?? '');
+
+  useEffect(() => {
+    if (!userToken) {
+      router.push("/");
+    }
+  }, [userToken, router]);
 
   const handleLogout = () => {
     deleteCookie('userToken');
+    setUserToken(undefined);
     router.push("/");
   };
 
   // Handle loading state and errors
+  if (!userToken) {
+    return null; // Ensure the component doesn't render if there's no token
+  }
+
   if (isLoading) {
     return <div>Loading...</div>;
   }

@@ -12,12 +12,23 @@ interface UserData {
   refresh: string;
 }
 
-export const useUserLogin = async (userData: LoginInput): Promise<UserData> => {
-  try {
-    const response = await axios.post<UserData>('/api/user-login', userData);
-    return response.data;
-  } catch (error) {
-    // Handle error here if needed or throw it to be caught by the calling function
-    throw error;
-  }
+export const useUserLogin = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const login = useCallback(async (userData: LoginInput) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.post<UserData>('/api/user-login', userData);
+      return response.data;
+    } catch (error) {
+      setError('Login failed. Please check your credentials.');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  return { login, isLoading, error };
 };
