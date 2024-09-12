@@ -1,14 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import logo from "../../assets/home/logo.png";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import useStore from "@/store/store";
-import SignInPopup from "./popups/SignInPopup";
-import userValidate from "@/utilities/userValidate";
-import { useSetHomeData } from "@/hooks/useHomeData";
-import { AxiosResponse } from "axios";
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import logo from '../../assets/home/logo.png';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import useStore from '@/store/store';
+import SignInPopup from './popups/SignInPopup';
+import userValidate from '@/utilities/userValidate';
+import { useSetHomeData } from '@/hooks/useHomeData';
+import { AxiosResponse } from 'axios';
 const whatsappsvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ const heartsvg = (
     <circle cx="24" cy="24.5" r="24" fill="#1C1B1F" fillOpacity="0.08" />
     <mask
       id="mask0_89_7436"
-      style={{ maskType: "alpha" }}
+      style={{ maskType: 'alpha' }}
       maskUnits="userSpaceOnUse"
       x="12"
       y="12"
@@ -75,7 +75,7 @@ const heartsvgmob = (
     <circle cx="16" cy="16" r="16" fill="#1C1B1F" fillOpacity="0.08" />
     <mask
       id="mask0_89_5113"
-      style={{ maskType: "alpha" }}
+      style={{ maskType: 'alpha' }}
       maskUnits="userSpaceOnUse"
       x="8"
       y="8"
@@ -104,7 +104,7 @@ const cartsvg = (
     <circle cx="24" cy="24.5" r="24" fill="#1C1B1F" fillOpacity="0.08" />
     <mask
       id="mask0_89_7441"
-      style={{ maskType: "alpha" }}
+      style={{ maskType: 'alpha' }}
       maskUnits="userSpaceOnUse"
       x="12"
       y="12"
@@ -132,7 +132,7 @@ const cartsvgmob = (
     <circle cx="16" cy="16" r="16" fill="#1C1B1F" fillOpacity="0.08" />
     <mask
       id="mask0_89_5118"
-      style={{ maskType: "alpha" }}
+      style={{ maskType: 'alpha' }}
       maskUnits="userSpaceOnUse"
       x="8"
       y="8"
@@ -161,7 +161,7 @@ const usersvg = (
     <circle cx="24" cy="24.5" r="24" fill="#1C1B1F" fillOpacity="0.08" />
     <mask
       id="mask0_89_7446"
-      style={{ maskType: "alpha" }}
+      style={{ maskType: 'alpha' }}
       maskUnits="userSpaceOnUse"
       x="12"
       y="12"
@@ -189,7 +189,7 @@ const usersvgmob = (
     <circle cx="16" cy="16" r="16" fill="#1C1B1F" fillOpacity="0.08" />
     <mask
       id="mask0_89_5123"
-      style={{ maskType: "alpha" }}
+      style={{ maskType: 'alpha' }}
       maskUnits="userSpaceOnUse"
       x="8"
       y="8"
@@ -244,7 +244,7 @@ interface HomeData {
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useStore(
-    (state) =>
+    state =>
       [state.isModalOpen, state.setIsModalOpen] as [
         boolean,
         (open: boolean) => void
@@ -265,7 +265,7 @@ const Header = () => {
       <div className="container mx-auto">
         <SignInPopup />
         <div className="flex justify-between">
-          <Link href={"/"}>
+          <Link href={'/'}>
             <div className="h-[67px] sm:h-[85px]">
               <Image
                 src={logo}
@@ -279,7 +279,7 @@ const Header = () => {
             <button
               onClick={() => {
                 const whatsappLink = `https://wa.me/91${whatsappNumber}`;
-                window.open(whatsappLink, "_blank");
+                window.open(whatsappLink, '_blank');
               }}
             >
               <div className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl">
@@ -289,10 +289,10 @@ const Header = () => {
 
             <div className="flex gap-[24px]">
               {userValidate() && (
-                <Link href={"/wishlist"}>
+                <Link href={'/wishlist'}>
                   <div
                     className={`w-[48px] h-[48px] flex items-center rounded-full  ${
-                      pathname === "/wishlist" && "border-[1px] border-black"
+                      pathname === '/wishlist' && 'border-[1px] border-black'
                     }`}
                   >
                     {heartsvg}
@@ -300,10 +300,10 @@ const Header = () => {
                 </Link>
               )}
               {userValidate() && (
-                <Link href={"/cart"}>
+                <Link href={'/cart'}>
                   <div
                     className={`w-[48px] h-[48px] flex items-center rounded-full  ${
-                      pathname === "/cart" && "border-[1px] border-black"
+                      pathname === '/cart' && 'border-[1px] border-black'
                     }`}
                   >
                     {cartsvg}
@@ -311,10 +311,10 @@ const Header = () => {
                 </Link>
               )}
               {userValidate() ? (
-                <Link href={"/profile"}>
+                <Link href={'/profile'}>
                   <div
                     className={`w-[48px] h-[48px] flex items-center rounded-full  ${
-                      pathname === "/profile" && "border-[1px] border-black"
+                      pathname === '/profile' && 'border-[1px] border-black'
                     }`}
                   >
                     {usersvg}
@@ -324,7 +324,7 @@ const Header = () => {
                 <div
                   onClick={() => setIsModalOpen(true)}
                   className={`w-[48px] h-[48px] flex items-center rounded-full  ${
-                    pathname === "/profile" && "border-[1px] border-black"
+                    pathname === '/profile' && 'border-[1px] border-black'
                   }`}
                 >
                   {usersvg}
@@ -336,7 +336,7 @@ const Header = () => {
             <div className="block">
               <div
                 className={`p-[16px] rounded border-[1px] border-[#E6E6E8] cursor-pointer ${
-                  isNavOpen ? "bg-black" : "bg-white"
+                  isNavOpen ? 'bg-black' : 'bg-white'
                 }`}
                 onClick={() => {
                   setIsNavOpen(!isNavOpen);
@@ -353,17 +353,22 @@ const Header = () => {
         </div>
         {isNavOpen && (
           <div className="flex justify-between my-2">
-            <div>
+            <button
+              onClick={() => {
+                const whatsappLink = `https://wa.me/91${whatsappNumber}`;
+                window.open(whatsappLink, '_blank');
+              }}
+            >
               <div className="rounded-full bg-black w-[32px] h-[32px] flex items-center justify-center">
                 {whatsappsvg}
               </div>
-            </div>
+            </button>
             <div className="flex gap-[24px]">
               {userValidate() && (
-                <Link href={"/wishlist"}>
+                <Link href={'/wishlist'}>
                   <div
                     className={`w-[32px] h-[32px] flex items-center rounded-full  ${
-                      pathname === "/wishlist" && "border-[1px] border-black"
+                      pathname === '/wishlist' && 'border-[1px] border-black'
                     }`}
                   >
                     {heartsvgmob}
@@ -371,10 +376,10 @@ const Header = () => {
                 </Link>
               )}
               {userValidate() && (
-                <Link href={"/cart"}>
+                <Link href={'/cart'}>
                   <div
                     className={`w-[32px] h-[32px] flex items-center rounded-full  ${
-                      pathname === "/cart" && "border-[1px] border-black"
+                      pathname === '/cart' && 'border-[1px] border-black'
                     }`}
                   >
                     {cartsvgmob}
@@ -382,10 +387,10 @@ const Header = () => {
                 </Link>
               )}
               {userValidate() ? (
-                <Link href={"/profile"}>
+                <Link href={'/profile'}>
                   <div
                     className={`w-[32px] h-[32px] flex items-center rounded-full  ${
-                      pathname === "/profile" && "border-[1px] border-black"
+                      pathname === '/profile' && 'border-[1px] border-black'
                     }`}
                   >
                     {usersvgmob}
@@ -395,7 +400,7 @@ const Header = () => {
                 <div
                   onClick={() => setIsModalOpen(true)}
                   className={`w-[32px] h-[32px] flex items-center rounded-full  ${
-                    pathname === "/profile" && "border-[1px] border-black"
+                    pathname === '/profile' && 'border-[1px] border-black'
                   }`}
                 >
                   {usersvgmob}

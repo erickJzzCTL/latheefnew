@@ -6,7 +6,7 @@ import useStore from '@/store/store';
 import axios from '@/utilities/customaxios';
 import { AxiosResponse } from 'axios';
 import { setCookie } from 'cookies-next';
-import { ToastContainer, toast } from 'react-toastify'; 
+import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 interface PsdsState {
   [key: string]: string; // Adjust this type if you have specific keys and value types
@@ -125,12 +125,12 @@ const ForgotPassword = ({
 
       <div className="mt-6 text-center">
         <span className="text-sm text-gray-600">Remember your account?</span>
-        <a
+        <div
           onClick={loginTabFun}
           className="text-sm text-black font-[500] hover:underline ml-2"
         >
           Login
-        </a>
+        </div>
       </div>
     </div>
   );
@@ -240,12 +240,12 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
 
       <div className="mt-6 text-center">
         <span className="text-sm text-gray-600">Didn&apos;t get code? </span>
-        <a
+        <div
           onClick={resendPwdFun}
           className="text-sm text-black font-[500] hover:underline ml-2 cursor-pointer"
         >
           Resend
-        </a>
+        </div>
       </div>
     </div>
   );

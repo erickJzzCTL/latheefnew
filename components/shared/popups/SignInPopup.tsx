@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Modal } from "antd";
-import Image from "next/image";
-import signupimage from "../../../assets/signup/signupimage.jpeg";
-import logo from "../../../assets/home/logo.png";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
-import useStore from "@/store/store";
-import Link from "next/link";
-import SignupField from "./signupField/SignupField";
-import SignInSuccess from "./signInSuccess/SignInSuccess";
-import ForgetpwdField from "./forgetPassword/forgetpwdField";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useUserLogin } from "@/hooks/userLogin"; // Import refactored custom hook
-import { setCookie } from "cookies-next";
+import React, { useState } from 'react';
+import { Modal } from 'antd';
+import Image from 'next/image';
+import signupimage from '../../../assets/signup/signupimage.jpeg';
+import logo from '../../../assets/home/logo.png';
+import { FaEye } from 'react-icons/fa';
+import { FaEyeSlash } from 'react-icons/fa';
+import useStore from '@/store/store';
+import Link from 'next/link';
+import SignupField from './signupField/SignupField';
+import SignInSuccess from './signInSuccess/SignInSuccess';
+import ForgetpwdField from './forgetPassword/forgetpwdField';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useUserLogin } from '@/hooks/userLogin'; // Import refactored custom hook
+import { setCookie } from 'cookies-next';
 
 export default function SignInPopup() {
   const [isModalOpen, setIsModalOpen] = useStore(
-    (state) =>
+    state =>
       [state.isModalOpen, state.setIsModalOpen] as [
         boolean,
         (open: boolean) => void
@@ -54,8 +54,8 @@ export default function SignInPopup() {
   }
 
   const [userData, setUserData] = React.useState<LoginInput>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleChange = (
@@ -85,14 +85,14 @@ export default function SignInPopup() {
   const handleSubmit = async () => {
     try {
       const result = await login(userData);
-      if (result.message === "Login Successfull") {
+      if (result.message === 'Login Successfull') {
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 2); // Set expiry date to 2 days from now
-        setCookie("userToken", result.access, {
-          path: "/",
+        setCookie('userToken', result.access, {
+          path: '/',
           expires: expiryDate,
         });
-        toast.success("Login Successful!", {
+        toast.success('Login Successful!', {
           autoClose: 1500,
           onClose: () => {
             // Handle successful login, e.g., navigate to another page or update UI
@@ -100,16 +100,16 @@ export default function SignInPopup() {
         });
         loginPostFn();
       } else {
-        toast.error("Login failed");
+        toast.error('Login failed');
       }
     } catch (err) {
-      toast.error("Invalid Credentials");
+      toast.error('Invalid Credentials');
     }
   };
 
   return (
     <div>
-      <ToastContainer position="bottom-left" />
+      {/* <ToastContainer position="bottom-left" />  */}
       <Modal
         open={isModalOpen}
         onCancel={handleCancel}
@@ -139,7 +139,7 @@ export default function SignInPopup() {
                   <input
                     className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4"
                     placeholder="Email"
-                    onChange={(e) => handleChange(e, "email")}
+                    onChange={e => handleChange(e, 'email')}
                   ></input>
                 </div>
                 <div className="flex flex-col gap-3 w-full">
@@ -158,8 +158,8 @@ export default function SignInPopup() {
                     <input
                       className="rounded-lg border-[1px] border-[#E6E6E8] h-[50px] w-full px-4 no-eye-icon"
                       placeholder="Password"
-                      type={showPassword ? "text" : "password"}
-                      onChange={(e) => handleChange(e, "password")}
+                      type={showPassword ? 'text' : 'password'}
+                      onChange={e => handleChange(e, 'password')}
                     ></input>
                     <div
                       className="absolute top-0 right-0 h-full flex items-center pr-4 cursor-pointer"
@@ -175,12 +175,12 @@ export default function SignInPopup() {
                 >
                   Forgot Password?
                 </div>
-                <Link className="w-full" href={"/"} passHref>
+                <Link className="w-full" href={'/'} passHref>
                   <button
                     onClick={handleSubmit}
                     className="bg-black text-white rounded-lg h-[50px] w-full"
                   >
-                    {isLoading ? "Submitting..." : "Submit"}
+                    {isLoading ? 'Submitting...' : 'Submit'}
                   </button>
                 </Link>
                 <div className="flex justify-center">
