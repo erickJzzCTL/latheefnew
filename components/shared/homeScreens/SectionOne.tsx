@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useSetHomeData } from "@/hooks/useHomeData";
-import { AxiosResponse } from "axios";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import React, { useState } from 'react';
+import { useSetHomeData } from '@/hooks/useHomeData';
+import { AxiosResponse } from 'axios';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface MainCategory {
   id: number;
@@ -43,23 +43,24 @@ const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({
   const router = useRouter();
 
   const handleImageClick = () => {
-    if (category.name !== "Kids") {
+    if (category.name !== 'Kids') {
       router.push(`/categoryProduct/${category.id}`);
     }
   };
+  console.log('category', category);
 
   return (
     <div
-      className={`relative ${index === 2 ? "col-span-2 md:col-span-1" : ""}`}
+      className={`relative ${index === 2 ? 'col-span-2 md:col-span-1' : ''}`}
     >
       <div className="h-[250px] sm:h-[416px] md:h-[580px] rounded-lg overflow-hidden">
         <Image
-          src={category?.image || "/"}
+          src={category?.image || '/'}
           alt={`${category.name}`}
           width={1000}
           height={1000}
           className={`w-full h-full object-cover md:object-[15%_50%] ${
-            category.name !== "Kids" ? "cursor-pointer" : ""
+            category.name !== 'Kids' ? 'cursor-pointer' : ''
           }`}
           onClick={handleImageClick}
         />
@@ -76,12 +77,12 @@ const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({
                   key={subcategory.id}
                   href={`/categoryProduct/${subcategory.id}`}
                   className={`px-[32px] py-[12px] rounded-lg bg-[#E6E6E8] hover:bg-black hover:text-white `}
-                  onClick={(e) => {
+                  onClick={e => {
                     setActiveSubcategory(subcategory.id);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 >
-                  {subIndex === 0 ? "Boys" : "Girls"}
+                  {subIndex === 0 ? 'Boys' : 'Girls'}
                 </Link>
               ))}
             </div>
@@ -90,7 +91,7 @@ const CategoryCard: React.FC<{ category: MainCategory; index: number }> = ({
               href={`/categoryProduct/${category.id}`}
               className="flex justify-between items-center"
               onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
               <span>{category.name}</span>
@@ -114,7 +115,7 @@ const SectionOne: React.FC = () => {
   const mainCategories =
     homeData?.data?.main_categories.reduce((acc, category) => {
       if (category.id === 3 || category.id === 5) {
-        const kidsCategory = acc.find((c) => c.name === "Kids");
+        const kidsCategory = acc.find(c => c.name === 'Kids');
         if (kidsCategory) {
           kidsCategory.subcategories?.push({
             id: category.id,
@@ -123,7 +124,7 @@ const SectionOne: React.FC = () => {
         } else {
           acc.push({
             id: acc.length + 1,
-            name: "Kids",
+            name: 'Kids',
             image: category.image, // You might want to use a different image for the combined category
             subcategories: [{ id: category.id, name: category.name }],
           });

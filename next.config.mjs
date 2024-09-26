@@ -5,10 +5,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'latheefadmin.zybotech.in',
+        hostname: 'admin.latheefwatch.com',
       },
     ],
   },
-}
+};
 
 export default nextConfig;
