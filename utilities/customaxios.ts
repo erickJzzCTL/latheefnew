@@ -1,9 +1,8 @@
-import axios from "axios";
-
+import axios from 'axios';
+// https://latheefadmin.zybotech.in/
 const customAxios = axios.create({
-    baseURL: "https://latheefadmin.zybotech.in/",
-    timeout: 10000,
+  baseURL: 'https://admin.latheefwatch.com',
+  timeout: 10000,
 });
 
-
-export  default customAxios
+export default customAxios;
