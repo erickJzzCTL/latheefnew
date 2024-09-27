@@ -120,7 +120,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="border-b-[1px] border-b-[#595959] my-6 sm:my-8 md:my-12"></div>
-          <p className="text-white text-[14px]">Designed by Zybo Tech Lab</p>
+          {/* <p className="text-white text-[14px]">Designed by Zybo Tech Lab</p> */}
         </div>
       </div>
     </div>
