@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import useStore from "@/store/store";
-import { useSubCategoryProducts } from "@/hooks/useSubCategoryProducts";
-import { useParams } from "next/navigation";
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useSubCategoryProducts } from '@/hooks/useSubCategoryProducts';
+import useStore from '@/store/store';
 
 interface Product {
   id: number;
@@ -17,38 +17,56 @@ interface Product {
 }
 
 export default function ProductGrid() {
-  const { categoryid } = useParams();
-  const selectedSubcategory = useStore((state) => state.selectedSubcategory);
-  const setSelectedSubcategory = useStore(
-    (state) => state.setSelectedSubcategory
-  );
-  const setOpenCategory = useStore((state) => state.setOpenCategory);
-  const togglePanel = useStore((state) => state.togglePanel);
+  const { categoryid } = useParams<{ categoryid: string }>();
+  const setOpenCategory = useStore(state => state.setOpenCategory);
+  const togglePanel = useStore(state => state.togglePanel);
 
   const [page, setPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-
-  const subcategoryId =
-    selectedSubcategory && !isNaN(Number(selectedSubcategory))
-      ? selectedSubcategory.toString()
-      : categoryid?.toString() || null;
+  const [subcategoryId, setSubcategoryId] = useState<string | null>(
+    categoryid || ''
+  );
 
   const { data, isLoading, error } = useSubCategoryProducts(
-    subcategoryId !== null ? subcategoryId : "",
+    subcategoryId || '',
     page
   );
 
   useEffect(() => {
-    if (subcategoryId && typeof subcategoryId === "string") {
-      setSelectedSubcategory(subcategoryId);
+    if (categoryid && categoryid !== subcategoryId) {
+      setSubcategoryId(categoryid);
     }
-  }, [subcategoryId, setSelectedSubcategory]);
+  }, [categoryid]);
 
   useEffect(() => {
-    if (data) {
-      setAllProducts((prev) => [...prev, ...data.data.products]);
+    if (data && data.data.products) {
+      // Deduplicate products before updating state
+      const newProducts = data.data.products.filter(
+        newProduct =>
+          !allProducts.some(
+            existingProduct => existingProduct.id === newProduct.id
+          )
+      );
+      setAllProducts(prev => [...prev, ...newProducts]);
     }
   }, [data]);
+
+  useEffect(() => {
+    setAllProducts([]);
+    setPage(1);
+  }, [subcategoryId]);
+
+  useEffect(() => {
+    if (allProducts.length > 0) {
+      setOpenCategory(
+        typeof allProducts[0]?.maincategory === 'number'
+          ? allProducts[0].maincategory
+          : typeof categoryid === 'string'
+          ? parseInt(categoryid)
+          : null
+      );
+    }
+  }, [allProducts, categoryid, setOpenCategory]);
 
   if (!subcategoryId || isNaN(Number(subcategoryId))) {
     return (
@@ -60,20 +78,12 @@ export default function ProductGrid() {
     );
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading && allProducts.length === 0) return <div>Loading...</div>;
   if (error) return <div>Error loading products: {error.message}</div>;
 
   const remainingProducts = data?.data.remaining_products || 0;
-  const subcategoryName = data?.data.subcategory_name || "Products";
-  const maincategoryName = data?.data.maincategory_name || "Collections";
-
-  setOpenCategory(
-    typeof allProducts[0]?.maincategory === "number"
-      ? allProducts[0].maincategory
-      : typeof categoryid === "string"
-      ? parseInt(categoryid)
-      : null
-  );
+  const subcategoryName = data?.data.subcategory_name || 'Products';
+  const maincategoryName = data?.data.maincategory_name || 'Collections';
 
   if (!allProducts || allProducts.length === 0) {
     return (
@@ -115,7 +125,7 @@ export default function ProductGrid() {
 
   const handleLoadMore = () => {
     if (data?.data.next) {
-      setPage((prev) => prev + 1);
+      setPage(prev => prev + 1);
     }
   };
 
