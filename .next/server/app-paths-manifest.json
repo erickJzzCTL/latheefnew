@@ -1,7 +1,5 @@
 {
   "/(root)/page": "app/(root)/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/(root)/categoryProduct/[categoryid]/page": "app/(root)/categoryProduct/[categoryid]/page.js",
-  "/(auth)/signin/page": "app/(auth)/signin/page.js",
-  "/(root)/profile/page": "app/(root)/profile/page.js"
+  "/(auth)/signin/page": "app/(auth)/signin/page.js"
 }
