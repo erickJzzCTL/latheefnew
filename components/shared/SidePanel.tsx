@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import useStore from "@/store/store";
-import { useSetHomeData } from "@/hooks/useHomeData";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import useStore from '@/store/store';
+import { useSetHomeData } from '@/hooks/useHomeData';
+import { useRouter, useParams } from 'next/navigation';
 
 interface SubCategory {
   id: number;
@@ -28,22 +28,23 @@ interface HomeData {
 }
 
 export default function SidePanel() {
-  const openCategory = useStore((state) => state.openCategory);
-  const setOpenCategory = useStore((state) => state.setOpenCategory);
-  const isOpen = useStore((state) => state.isOpen);
-  const togglePanel = useStore((state) => state.togglePanel);
+  const openCategory = useStore(state => state.openCategory);
+  const setOpenCategory = useStore(state => state.setOpenCategory);
+  const isOpen = useStore(state => state.isOpen);
+  const togglePanel = useStore(state => state.togglePanel);
   const setSelectedSubcategory = useStore(
-    (state) => state.setSelectedSubcategory
+    state => state.setSelectedSubcategory
   );
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const { homeData } = useSetHomeData() as { homeData: HomeData };
   const router = useRouter();
+  const { categoryId } = useParams(); // Get category ID from URL params
 
   const categories: Category[] =
-    homeData?.data?.main_categories?.map((category) => ({
+    homeData?.data?.main_categories?.map(category => ({
       id: category.id,
       name: category.name,
-      subcategories: category.sub_category.map((sub) => ({
+      subcategories: category.sub_category.map(sub => ({
         id: sub.id,
         name: sub.name,
       })),
@@ -54,9 +55,19 @@ export default function SidePanel() {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  useEffect(() => {
+    // Update selected subcategory based on route
+    if (categoryId) {
+      const category = categories.find(cat => cat.id === Number(categoryId));
+      if (category && category.subcategories.length > 0) {
+        setSelectedSubcategory(category.subcategories[0].id.toString());
+      }
+    }
+  }, [categoryId, categories, setSelectedSubcategory]);
 
   const toggleCategory = (id: number) => {
     setOpenCategory(openCategory === id ? null : id);
@@ -64,9 +75,9 @@ export default function SidePanel() {
 
   const handleSubcategoryClick = (subcategoryId: number) => {
     setSelectedSubcategory(subcategoryId.toString());
+    router.push(`/categoryFilter/${subcategoryId}`); // Navigate to the new URL
     if (isMobile) togglePanel(); // Close panel on mobile after selection
   };
-  
 
   const panelContent = (
     <div className="border-[1px] border-[#E6E6E8] md:rounded-[20px] px-6 py-4 md:h-fit h-full bg-white mb-10">
@@ -93,7 +104,7 @@ export default function SidePanel() {
         <div key={category.id}>
           <div
             className={`py-3 flex justify-between items-center cursor-pointer ${
-              index !== categories.length - 1 ? "border-b border-[#E6E6E8]" : ""
+              index !== categories.length - 1 ? 'border-b border-[#E6E6E8]' : ''
             }`}
             onClick={() => toggleCategory(category.id)}
           >
@@ -123,13 +134,13 @@ export default function SidePanel() {
             {openCategory === category.id && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
+                animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
                 <div className="pl-4 py-2">
-                  {category.subcategories.map((sub) => (
+                  {category.subcategories.map(sub => (
                     <div
                       key={sub.id}
                       className="py-2 cursor-pointer"
@@ -153,10 +164,10 @@ export default function SidePanel() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ x: "-100%" }}
+              initial={{ x: '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="fixed top-0 left-0 h-full w-4/5 max-w-sm z-40 overflow-y-auto"
             >
               {panelContent}
