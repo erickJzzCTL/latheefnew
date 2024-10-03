@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useRef, useState, ChangeEvent } from 'react';
+import React, { useRef, useState, ChangeEvent, useEffect } from 'react';
 import useStore from '@/store/store';
 import axios from '@/utilities/customaxios';
 import { AxiosResponse } from 'axios';
@@ -148,6 +148,21 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const [timer, setTimer] = useState<number>(60);
+  const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timer > 0 && isResendDisabled) {
+      interval = setInterval(() => {
+        setTimer(prevTimer => prevTimer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setIsResendDisabled(false);
+    }
+    return () => clearInterval(interval);
+  }, [timer, isResendDisabled]);
+
   const handleInputChange = (index: number, value: string) => {
     if (/^\d?$/.test(value)) {
       const newCode = [...code];
@@ -187,6 +202,8 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
       const { otp } = response.data;
       if (response.status === 200) {
         setUserOTP(otp);
+        setTimer(60);
+        setIsResendDisabled(true);
       }
     } catch (error) {
       console.error('Error submitting email:', error);
@@ -240,11 +257,19 @@ const VerifyAccount = ({ onVerify }: { onVerify: () => void }) => {
 
       <div className="mt-6 text-center">
         <span className="text-sm text-gray-600">Didn&apos;t get code? </span>
-        <div
+        {/* <div
           onClick={resendPwdFun}
           className="text-sm text-black font-[500] hover:underline ml-2 cursor-pointer"
         >
           Resend
+        </div> */}
+        <div
+          onClick={resendPwdFun}
+          className={`text-sm text-black font-[500] hover:underline ml-2 cursor-pointer ${
+            isResendDisabled ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          {isResendDisabled ? `Resend in ${timer}s` : 'Resend'}
         </div>
       </div>
     </div>

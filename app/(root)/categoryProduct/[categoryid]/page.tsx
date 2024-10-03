@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useSubCategories } from "@/hooks/useSubCategoryData";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import { useSubCategories } from '@/hooks/useSubCategoryData';
 
 interface Subcategory {
   id: number;
@@ -75,11 +75,11 @@ const CategoryProduct: React.FC = () => {
     error: unknown;
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  // if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
 
   const subcategories = data?.data.subcategories || [];
-  const product_collection = data?.data.maincategory_name || "Collections";
+  const product_collection = data?.data.maincategory_name || 'Collections';
 
   return (
     <div className="bg-[#F0F0F0]">
@@ -87,13 +87,30 @@ const CategoryProduct: React.FC = () => {
         <h1 className="text-center sm:text-left text-[20px] sm:text-[30px] md:text-[40px] font-semibold pt-6 sm:pt-10">
           {product_collection} Collection
         </h1>
-        <div className="pt-4 pb-14">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-10">
-            {subcategories.map((item) => (
-              <SubcategoryCard key={item.id} item={item} />
-            ))}
+        {isLoading ? (
+          <div className="pt-4 pb-14">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-10">
+              {[...Array(6)].map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-100 animate-pulse rounded-lg overflow-hidden h-[200px] md:h-[400px]"
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="pt-4 pb-14">
+            {subcategories.length === 0 ? (
+              <p>No Data Found</p>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-10">
+                {subcategories.map(item => (
+                  <SubcategoryCard key={item.id} item={item} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

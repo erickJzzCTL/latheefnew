@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSetHomeData } from '@/hooks/useHomeData';
 import { AxiosResponse } from 'axios';
 import Link from 'next/link';
@@ -110,7 +110,13 @@ const SectionOne: React.FC = () => {
   const { homeData } = useSetHomeData() as {
     homeData: AxiosResponse<HomeData> | undefined;
   };
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (homeData) {
+      setLoading(false);
+    }
+  }, [homeData]);
   // Combine boys and girls categories into a single "Kids" category
   const mainCategories =
     homeData?.data?.main_categories.reduce((acc, category) => {
@@ -137,11 +143,26 @@ const SectionOne: React.FC = () => {
 
   return (
     <div className="container mx-auto mt-10 md:mb-24 mb-14">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-        {mainCategories.map((category, index) => (
-          <CategoryCard key={category.id} category={category} index={index} />
-        ))}
-      </div>
+      {loading ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+          {[...Array(3)].map((_, index) => (
+            <div
+              className={`relative ${
+                index === 2 ? 'col-span-2 md:col-span-1' : ''
+              }`}
+              key={index}
+            >
+              <div className="bg-gray-100 animate-pulse rounded-lg overflow-hidden h-[250px] sm:h-[416px] md:h-[580px]  " />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+          {mainCategories.map((category, index) => (
+            <CategoryCard key={category.id} category={category} index={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
