@@ -278,12 +278,12 @@ const Header = () => {
           <div className="gap-[40px] items-center hidden sm:flex">
             <button
               onClick={() => {
-                const whatsappLink = `https://wa.me/91${whatsappNumber}`;
+                const whatsappLink = `https://wa.me/${whatsappNumber}`;
                 window.open(whatsappLink, '_blank');
               }}
             >
               <div className="flex bg-black py-[12px] px-[24px] text-white rounded-3xl">
-                {whatsappsvg} <h1 className="ml-2">+91{whatsappNumber}</h1>
+                {whatsappsvg} <h1 className="ml-2">{whatsappNumber}</h1>
               </div>
             </button>
 
@@ -355,7 +355,7 @@ const Header = () => {
           <div className="flex justify-between my-2">
             <button
               onClick={() => {
-                const whatsappLink = `https://wa.me/91${whatsappNumber}`;
+                const whatsappLink = `https://wa.me/${whatsappNumber}`;
                 window.open(whatsappLink, '_blank');
               }}
             >
